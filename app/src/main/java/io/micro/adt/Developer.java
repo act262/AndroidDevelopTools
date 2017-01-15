@@ -3,11 +3,14 @@ package io.micro.adt;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.BatteryManager;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.Parcel;
 import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.os.SystemProperties;
+import android.provider.Settings;
 import android.util.Log;
 
 /**
@@ -73,6 +76,33 @@ public class Developer {
     public static void setProfile(boolean bool) {
         SystemProperties.set(PROFILE_PROPERTY, bool ? PROFILE_PROPERTY_VISUALIZE_BARS : FALSE);
         refresh();
+    }
+
+    /**
+     * USB调试开关,AndroidManifest配置android:sharedUserId="android.uid.system",
+     * 使用权限:<uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
+     */
+    public static void setAdbEnable(Context context, boolean enable) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            try {
+                Settings.Global.putInt(context.getContentResolver(),
+                        Settings.Global.ADB_ENABLED, enable ? 1 : 0);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void keepScreenOn(Context context, boolean check) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            try {
+                Settings.Global.putInt(context.getContentResolver(),
+                        Settings.Global.STAY_ON_WHILE_PLUGGED_IN,
+                        check ? (BatteryManager.BATTERY_PLUGGED_AC | BatteryManager.BATTERY_PLUGGED_USB) : 0);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**

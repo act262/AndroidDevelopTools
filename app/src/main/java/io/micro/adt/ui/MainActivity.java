@@ -42,11 +42,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         toolbar.setOnMenuItemClickListener(this);
 
         itemList = new ArrayList<>();
+        int[] idArray = getResources().getIntArray(R.array.dev_id);
         String[] descArray = getResources().getStringArray(R.array.dev_desc);
         TypedArray typedArray = getResources().obtainTypedArray(R.array.dev_icon);
-        for (int i = 0; i < descArray.length; i++) {
+
+        for (int i = 0; i < idArray.length; i++) {
             DevItem devItem = new DevItem();
-            devItem.id = i;
+            devItem.id = idArray[i];
             devItem.desc = descArray[i];
             devItem.icon = typedArray.getResourceId(i, 0);
             devItem.activated = getDevItemActivated(devItem);
@@ -76,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         DevItem item = mAdapter.getItem(position);
         item.activated = !item.activated;
-        DevItem.handle(item);
+        DevItem.handle(getApplicationContext(), item);
         mAdapter.notifyDataSetChanged();
         setDevItemActivated(item);
     }

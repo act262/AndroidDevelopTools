@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.micro.adt">
+    package="io.micro.adt"
+    android:sharedUserId="android.uid.system">
+
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
 
     <application
         android:allowBackup="true"
@@ -16,7 +19,6 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".ui.MainActivity$ShowLayout" />
     </application>
 
 </manifest>

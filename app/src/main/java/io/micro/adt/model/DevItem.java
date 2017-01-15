@@ -1,5 +1,7 @@
 package io.micro.adt.model;
 
+import android.content.Context;
+
 import io.micro.adt.Developer;
 
 /**
@@ -11,16 +13,23 @@ public class DevItem {
     public int icon;
     public boolean activated;
 
-    public static void handle(DevItem item) {
+    public static void handle(Context context, DevItem item) {
         boolean activated = item.activated;
         switch (item.id) {
-            case 0:
+
+            case 0x01:
+                Developer.setAdbEnable(context, item.activated);
+                break;
+            case 0x02:
+                Developer.keepScreenOn(context, item.activated);
+                break;
+            case 0x03:
                 Developer.setDebugLayout(activated);
                 break;
-            case 1:
+            case 0x04:
                 Developer.setDebugOverdraw(activated);
                 break;
-            case 2:
+            case 0x05:
                 Developer.setProfile(activated);
                 break;
             default:
