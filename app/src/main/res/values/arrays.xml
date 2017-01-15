@@ -7,6 +7,8 @@
         <item>0x03</item>
         <item>0x04</item>
         <item>0x05</item>
+        <item>0x06</item>
+        <item>0x07</item>
     </integer-array>
 
     <string-array name="dev_desc">
@@ -15,9 +17,13 @@
         <item>显示布局边界</item>
         <item>调试GPU过度绘制</item>
         <item>GPU呈现模式分析</item>
+        <item>启用严格模式</item>
+        <item>不保留活动</item>
     </string-array>
 
     <integer-array name="dev_icon">
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
         <item>@mipmap/ic_launcher</item>
         <item>@mipmap/ic_launcher</item>
         <item>@mipmap/ic_launcher</item>

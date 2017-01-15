@@ -13,6 +13,9 @@ import android.os.SystemProperties;
 import android.provider.Settings;
 import android.util.Log;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 /**
  * 开发者选项控制
  *
@@ -29,6 +32,9 @@ public class Developer {
     /* copy from ThreadedRenderer.PROFILE_PROPERTY */
     private static final String PROFILE_PROPERTY = "debug.hwui.profile";
     private static final String PROFILE_PROPERTY_VISUALIZE_BARS = "visual_bars";
+
+    /* copy from StrictMode.VISUAL_PROPERTY */
+    public static final String VISUAL_PROPERTY = "persist.sys.strictmode.visual";
 
     private Developer() {
     }
@@ -93,6 +99,9 @@ public class Developer {
         }
     }
 
+    /**
+     * 保持唤醒状态,配置同AdbEnable方法
+     */
     public static void keepScreenOn(Context context, boolean check) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             try {
@@ -102,6 +111,49 @@ public class Developer {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    /**
+     * 严格模式
+     */
+    public static void setStrictMode(boolean enable) {
+        try {
+            Class<?> clz = Class.forName("android.view.IWindowManager$Stub");
+            Method asInterface = clz.getMethod("asInterface", IBinder.class);
+            Object windowManager = asInterface.invoke(null, ServiceManager.getService("window"));
+            Method method = clz.getMethod("setStrictModeVisualIndicatorPreference", String.class);
+            method.invoke(windowManager, enable ? "1" : "");
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 不保留活动,用户离开后即销毁每个活动
+     */
+    public static void setDestroyActivities(boolean check) {
+        try {
+            Class<?> clz = Class.forName("android.app.ActivityManagerNative");
+            Method getDefault = clz.getMethod("getDefault");
+            Object activityManagerNative = getDefault.invoke(null);
+
+            Method setAlwaysFinish = clz.getMethod("setAlwaysFinish", boolean.class);
+            setAlwaysFinish.invoke(activityManagerNative, check);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         }
     }
 

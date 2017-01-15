@@ -19,6 +19,20 @@ public class ServiceManager {
         return null;
     }
 
+    public static IBinder getService(String name) {
+        try {
+            Method method = clz().getMethod("getService", String.class);
+            return (IBinder) method.invoke(null, name);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static String[] listServices() {
         String[] result = null;
         try {
