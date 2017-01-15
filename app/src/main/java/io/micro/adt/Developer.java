@@ -1,5 +1,7 @@
 package io.micro.adt;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.os.Parcel;
@@ -71,6 +73,15 @@ public class Developer {
     public static void setProfile(boolean bool) {
         SystemProperties.set(PROFILE_PROPERTY, bool ? PROFILE_PROPERTY_VISUALIZE_BARS : FALSE);
         refresh();
+    }
+
+    /**
+     * 打开开发者选项页面
+     */
+    public static void openDevelopmentSettings(Context context) {
+        Intent intent = new Intent("com.android.settings.APPLICATION_DEVELOPMENT_SETTINGS");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 
     /**

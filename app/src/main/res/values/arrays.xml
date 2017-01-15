@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="dev_desc">
+        <item>显示布局边界</item>
+        <item>调试GPU过度绘制</item>
+        <item>GPU呈现模式分析</item>
+    </string-array>
+
+    <integer-array name="dev_icon">
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+    </integer-array>
+</resources>
