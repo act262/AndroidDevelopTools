@@ -2,7 +2,7 @@ package io.micro.adt.model;
 
 import android.content.Context;
 
-import io.micro.adt.Developer;
+import io.micro.adt.util.Developer;
 
 /**
  * DevItem model

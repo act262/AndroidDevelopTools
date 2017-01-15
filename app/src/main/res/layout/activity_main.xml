@@ -15,14 +15,18 @@
         android:title="@string/app_name"
         app:title="@string/app_name" />
 
-    <GridView
-        android:id="@+id/listView"
+    <Switch
+        android:id="@+id/switchFloatBall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textOff="@string/float_ball_off"
+        android:textOn="@string/float_ball_on" />
+
+    <fragment
+        android:id="@+id/content"
+        class="io.micro.adt.ui.ControllerFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:horizontalSpacing="20dp"
-        android:numColumns="3"
-        android:verticalSpacing="20dp"
-        tools:listitem="@layout/item_dev" />
+        tools:layout="@layout/fragment_controller" />
 
 </LinearLayout>

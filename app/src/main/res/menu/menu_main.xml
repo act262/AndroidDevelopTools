@@ -8,4 +8,11 @@
         android:icon="@android:drawable/ic_menu_more"
         android:title="@string/developer"
         app:showAsAction="always" />
+
+    <!-- 开启悬浮球 -->
+    <item
+        android:id="@+id/menu_float"
+        android:icon="@android:drawable/ic_menu_zoom"
+        android:title="@string/float_ball"
+        app:showAsAction="ifRoom" />
 </menu>
