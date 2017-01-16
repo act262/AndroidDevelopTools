@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                 toggleFloatBallService(isChecked);
             }
         });
+
         boolean checked = preferences.getBoolean(KEY_FLOAT_BALL_SWITCH, false);
         floatBallSwitch.setChecked(checked);
     }

@@ -4,4 +4,9 @@
     <string name="float_ball">开启悬浮球</string>
     <string name="float_ball_on">开启悬浮球</string>
     <string name="float_ball_off">关闭悬浮球</string>
+    <string name="turn_off_proxy">关闭代理</string>
+    <string name="turn_on_proxy">开启代理</string>
+    <string name="hint_proxy_host">Host</string>
+    <string name="hint_proxy_port">Port</string>
+    <string name="default_proxy_port">8888</string>
 </resources>

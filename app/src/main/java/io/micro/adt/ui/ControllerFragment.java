@@ -6,14 +6,19 @@ import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.text.Editable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +26,9 @@ import java.util.List;
 import io.micro.adt.R;
 import io.micro.adt.model.DevItem;
 import io.micro.adt.util.ColorUtil;
+import io.micro.adt.util.DFormatter;
+import io.micro.adt.util.NetworkKit;
+import io.micro.adt.util.text.SimpleTextWatcher;
 
 /**
  * 控制器页面
@@ -69,6 +77,36 @@ public class ControllerFragment extends Fragment implements AdapterView.OnItemCl
         mAdapter = new DevAdapter();
         gridView.setAdapter(mAdapter);
         gridView.setOnItemClickListener(this);
+
+        ToggleButton proxyButton = (ToggleButton) view.findViewById(R.id.proxySwitch);
+        final EditText hostText = (EditText) view.findViewById(R.id.et_host);
+        final EditText portText = (EditText) view.findViewById(R.id.et_port);
+
+        hostText.addTextChangedListener(new SimpleTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                // TODO: 2017/1/16 状态变化设置
+            }
+        });
+        proxyButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                String host = hostText.getText().toString().trim();
+                String port = portText.getText().toString().trim();
+                if (isChecked) {
+                    if (TextUtils.isEmpty(host)) {
+                        hostText.setError("Host can't empty");
+                        return;
+                    }
+                    if (TextUtils.isEmpty(port)) {
+                        portText.setError("Port can't empty");
+                        return;
+                    }
+                }
+                // TODO: 2017/1/16 校验IP,端口
+                NetworkKit.setProxy(getActivity(), isChecked, host, DFormatter.parseInt(port));
+            }
+        });
     }
 
     @Override
