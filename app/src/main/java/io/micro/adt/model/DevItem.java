@@ -2,7 +2,7 @@ package io.micro.adt.model;
 
 import android.content.Context;
 
-import io.micro.adt.util.Developer;
+import io.micro.adt.util.DeveloperKit;
 
 /**
  * DevItem model
@@ -17,25 +17,25 @@ public class DevItem {
         boolean activated = item.activated;
         switch (item.id) {
             case 0x01:
-                Developer.setAdbEnable(context, activated);
+                DeveloperKit.setAdbEnable(context, activated);
                 break;
             case 0x02:
-                Developer.keepScreenOn(context, activated);
+                DeveloperKit.keepScreenOn(context, activated);
                 break;
             case 0x03:
-                Developer.setDebugLayout(activated);
+                DeveloperKit.setDebugLayout(activated);
                 break;
             case 0x04:
-                Developer.setDebugOverdraw(activated);
+                DeveloperKit.setDebugOverdraw(activated);
                 break;
             case 0x05:
-                Developer.setProfile(activated);
+                DeveloperKit.setProfile(activated);
                 break;
             case 0x06:
-                Developer.setStrictMode(activated);
+                DeveloperKit.setStrictMode(activated);
                 break;
             case 0x07:
-                Developer.setDestroyActivities(activated);
+                DeveloperKit.setDestroyActivities(activated);
                 break;
             default:
                 // no-op

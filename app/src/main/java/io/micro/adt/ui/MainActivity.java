@@ -13,7 +13,7 @@ import android.widget.Switch;
 
 import io.micro.adt.R;
 import io.micro.adt.service.FloatBallService;
-import io.micro.adt.util.Developer;
+import io.micro.adt.util.DeveloperKit;
 
 public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuItemClickListener {
 
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_settings:
-                Developer.openDevelopmentSettings(MainActivity.this);
+                DeveloperKit.openDevelopmentSettings(MainActivity.this);
                 break;
             case R.id.menu_float:
                 break;

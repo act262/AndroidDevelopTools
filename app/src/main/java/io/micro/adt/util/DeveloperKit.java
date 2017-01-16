@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
  *
  * @author act262@gmail.com
  */
-public class Developer {
+public class DeveloperKit {
 
     private static final String FALSE = "false";
     /* copy from View.DEBUG_LAYOUT_PROPERTY */
@@ -36,7 +36,7 @@ public class Developer {
     /* copy from StrictMode.VISUAL_PROPERTY */
     public static final String VISUAL_PROPERTY = "persist.sys.strictmode.visual";
 
-    private Developer() {
+    private DeveloperKit() {
     }
 
     /**
