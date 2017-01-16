@@ -1,13 +1,10 @@
 package io.micro.adt.ui;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -23,8 +20,6 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     private SharedPreferences preferences;
 
     private static final String KEY_FLOAT_BALL_SWITCH = "floatBallSwitch";
-    private StatusReceiver receiver;
-    private Switch floatBallSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         toolbar.inflateMenu(R.menu.menu_main);
         toolbar.setOnMenuItemClickListener(this);
 
-        floatBallSwitch = (Switch) findViewById(R.id.switchFloatBall);
+        Switch floatBallSwitch = (Switch) findViewById(R.id.switchFloatBall);
         floatBallSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -44,18 +39,8 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                 toggleFloatBallService(isChecked);
             }
         });
-        floatBallSwitch.setChecked(preferences.getBoolean(KEY_FLOAT_BALL_SWITCH, false));
-
-        receiver = new StatusReceiver();
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(ACTION_FLOAT_BALL_SWITCH_CHANGED);
-        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter);
-    }
-
-    @Override
-    protected void onDestroy() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
-        super.onDestroy();
+        boolean checked = preferences.getBoolean(KEY_FLOAT_BALL_SWITCH, false);
+        floatBallSwitch.setChecked(checked);
     }
 
     @Override
@@ -81,17 +66,10 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         }
     }
 
-    public static final String ACTION_FLOAT_BALL_SWITCH_CHANGED = "io.micro.adt.FLOAT_BALL_SWITCH_CHANGED";
-
-    private class StatusReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            switch (intent.getAction()) {
-                case ACTION_FLOAT_BALL_SWITCH_CHANGED:
-                    boolean result = intent.getBooleanExtra("switch", false);
-                    floatBallSwitch.setChecked(result);
-                    break;
-            }
-        }
+    public static void goHome(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
+
 }

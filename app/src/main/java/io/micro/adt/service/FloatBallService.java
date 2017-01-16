@@ -2,13 +2,13 @@ package io.micro.adt.service;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -19,15 +19,19 @@ import io.micro.adt.widget.FloatBallView;
 /**
  * 悬浮球后台服务，保证悬浮球的刷新
  */
-public class FloatBallService extends Service {
+public class FloatBallService extends Service implements View.OnClickListener, FloatBallView.OnTouchViewUpdater {
 
     private FloatBallView floatBallView;
     private WindowManager windowManager;
     private WindowManager.LayoutParams layoutParams;
 
+    private SharedPreferences preferences;
+
     @Override
     public void onCreate() {
         super.onCreate();
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
     }
 
@@ -68,55 +72,46 @@ public class FloatBallService extends Service {
         layoutParams.type = WindowManager.LayoutParams.TYPE_PHONE;
         layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                 | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
-        layoutParams.format = PixelFormat.RGBA_8888;
-        layoutParams.x = 100;
-        layoutParams.y = 100;
 
-        floatBallView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hideFloatBall();
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            }
-        });
+        // 显示半透明
+        layoutParams.alpha = 0.5f;
+        layoutParams.format = PixelFormat.TRANSPARENT;
 
-        floatBallView.setOnTouchListener(new View.OnTouchListener() {
-            float lastX, lastY;
-            float startX, startY;
+        // 使用最后一次显示过的位置
+        layoutParams.x = preferences.getInt(LAST_POSITION_X, 100);
+        layoutParams.y = preferences.getInt(LAST_POSITION_Y, 100);
 
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        startX = event.getRawX();
-                        startY = event.getRawY();
-                        lastX = startX;
-                        lastY = startY;
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        float tempX = event.getRawX();
-                        float tempY = event.getRawY();
-                        layoutParams.x += (int) (tempX - lastX);
-                        layoutParams.y += (int) (tempY - lastY);
-                        lastX = tempX;
-                        lastY = tempY;
-                        windowManager.updateViewLayout(floatBallView, layoutParams);
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        return Math.abs(event.getRawX() - startX) > 10 && Math.abs(event.getRawY() - startY) > 10;
-                }
-                return false;
-            }
-        });
+        floatBallView.setOnClickListener(this);
+        floatBallView.setOnTouchViewUpdater(this);
     }
 
     private void hideFloatBall() {
-        WindowManager windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-        if (floatBallView != null && floatBallView.isAttachedToWindow()) {
+        if (floatBallView != null) {
+            applyLastPosition();
             windowManager.removeView(floatBallView);
         }
-        Intent intent = new Intent(MainActivity.ACTION_FLOAT_BALL_SWITCH_CHANGED);
-        intent.putExtra("switch", false);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
+
+    @Override
+    public void onClick(View v) {
+        MainActivity.goHome(getApplicationContext());
+    }
+
+    @Override
+    public void onTouchMoved(int offsetX, int offsetY) {
+        layoutParams.x += offsetX;
+        layoutParams.y += offsetY;
+        windowManager.updateViewLayout(floatBallView, layoutParams);
+    }
+
+    // 保存最后一次显示的位置
+    private void applyLastPosition() {
+        preferences.edit()
+                .putInt(LAST_POSITION_X, layoutParams.x)
+                .putInt(LAST_POSITION_Y, layoutParams.y)
+                .apply();
+    }
+
+    public static final String LAST_POSITION_X = "float_ball_position_X";
+    public static final String LAST_POSITION_Y = "float_ball_position_Y";
 }
