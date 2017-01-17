@@ -37,6 +37,9 @@ public class DevItem {
             case 0x07:
                 DeveloperKit.setDestroyActivities(activated);
                 break;
+            case 0x08:
+                DeveloperKit.openDevelopmentSettings(context);
+                break;
             default:
                 // no-op
         }

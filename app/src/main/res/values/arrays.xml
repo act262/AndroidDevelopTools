@@ -9,6 +9,7 @@
         <item>0x05</item>
         <item>0x06</item>
         <item>0x07</item>
+        <item>0x08</item>
     </integer-array>
 
     <string-array name="dev_desc">
@@ -19,15 +20,17 @@
         <item>GPU呈现模式分析</item>
         <item>启用严格模式</item>
         <item>不保留活动</item>
+        <item>开发者选项</item>
     </string-array>
 
     <integer-array name="dev_icon">
-        <item>@mipmap/ic_launcher</item>
-        <item>@mipmap/ic_launcher</item>
-        <item>@mipmap/ic_launcher</item>
-        <item>@mipmap/ic_launcher</item>
-        <item>@mipmap/ic_launcher</item>
-        <item>@mipmap/ic_launcher</item>
-        <item>@mipmap/ic_launcher</item>
+        <item>@drawable/ic_developer_usb</item>
+        <item>@drawable/ic_developer_keep_screen_on</item>
+        <item>@drawable/ic_developer_debug_layout</item>
+        <item>@drawable/ic_developer_overdraw</item>
+        <item>@drawable/ic_developer_gpu_profile</item>
+        <item>@drawable/ic_developer_strict</item>
+        <item>@drawable/ic_developer_destroy_activity</item>
+        <item>@drawable/ic_developer_settings</item>
     </integer-array>
 </resources>

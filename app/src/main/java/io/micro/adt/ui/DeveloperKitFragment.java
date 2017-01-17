@@ -136,7 +136,7 @@ public class DeveloperKitFragment extends BaseFragment implements AdapterView.On
             void set(DevItem item) {
                 icon.setImageResource(item.icon);
                 icon.setColorFilter(item.activated ?
-                        ColorUtil.getEnabledFilter() : ColorUtil.getDisabledFilter());
+                        ColorUtil.getEnabledFilter1() : ColorUtil.getDisabledFilter1());
                 text.setText(item.desc);
                 text.setActivated(item.activated);
             }
