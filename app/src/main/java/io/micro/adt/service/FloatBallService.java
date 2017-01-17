@@ -78,8 +78,8 @@ public class FloatBallService extends Service implements View.OnClickListener, F
         layoutParams.format = PixelFormat.TRANSPARENT;
 
         // 使用最后一次显示过的位置
-        layoutParams.x = preferences.getInt(LAST_POSITION_X, 100);
-        layoutParams.y = preferences.getInt(LAST_POSITION_Y, 100);
+        layoutParams.x = preferences.getInt(KEY_LAST_POSITION_X, 100);
+        layoutParams.y = preferences.getInt(KEY_LAST_POSITION_Y, 100);
 
         floatBallView.setOnClickListener(this);
         floatBallView.setOnTouchViewUpdater(this);
@@ -107,11 +107,12 @@ public class FloatBallService extends Service implements View.OnClickListener, F
     // 保存最后一次显示的位置
     private void applyLastPosition() {
         preferences.edit()
-                .putInt(LAST_POSITION_X, layoutParams.x)
-                .putInt(LAST_POSITION_Y, layoutParams.y)
+                .putInt(KEY_LAST_POSITION_X, layoutParams.x)
+                .putInt(KEY_LAST_POSITION_Y, layoutParams.y)
                 .apply();
     }
 
-    public static final String LAST_POSITION_X = "float_ball_position_X";
-    public static final String LAST_POSITION_Y = "float_ball_position_Y";
+    public static final String KEY_FLOAT_BALL_SWITCH = "float_ball_switch";
+    public static final String KEY_LAST_POSITION_X = "float_ball_position_x";
+    public static final String KEY_LAST_POSITION_Y = "float_ball_position_y";
 }

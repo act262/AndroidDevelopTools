@@ -14,11 +14,9 @@ import android.widget.Switch;
 import io.micro.adt.R;
 import io.micro.adt.service.FloatBallService;
 
-public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuItemClickListener {
+public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuItemClickListener, CompoundButton.OnCheckedChangeListener {
 
     private SharedPreferences preferences;
-
-    private static final String KEY_FLOAT_BALL_SWITCH = "floatBallSwitch";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,16 +29,11 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         toolbar.setOnMenuItemClickListener(this);
 
         Switch floatBallSwitch = (Switch) findViewById(R.id.switchFloatBall);
-        floatBallSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                preferences.edit().putBoolean(KEY_FLOAT_BALL_SWITCH, isChecked).apply();
-                toggleFloatBallService(isChecked);
-            }
-        });
+        floatBallSwitch.setOnCheckedChangeListener(this);
 
-        boolean checked = preferences.getBoolean(KEY_FLOAT_BALL_SWITCH, false);
+        boolean checked = preferences.getBoolean(FloatBallService.KEY_FLOAT_BALL_SWITCH, false);
         floatBallSwitch.setChecked(checked);
+        toggleFloatBallService(checked);
     }
 
     @Override
@@ -50,6 +43,12 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                 // no-op
         }
         return true;
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        preferences.edit().putBoolean(FloatBallService.KEY_FLOAT_BALL_SWITCH, isChecked).apply();
+        toggleFloatBallService(isChecked);
     }
 
     private void toggleFloatBallService(boolean checked) {
@@ -66,5 +65,4 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
-
 }

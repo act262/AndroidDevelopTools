@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -15,9 +16,8 @@ import android.view.ViewConfiguration;
  */
 public class FloatBallView extends View {
 
-    // 固定宽高
-    public static final int WIDTH = 100;
-    public static final int HEIGHT = 100;
+    // 固定宽高dp
+    public static final float WIDTH = 33;
 
     private Paint mPaint;
     private float radius;
@@ -44,7 +44,9 @@ public class FloatBallView extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        setMeasuredDimension(WIDTH, HEIGHT);
+        int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, WIDTH, getResources().getDisplayMetrics());
+        //noinspection SuspiciousNameCombination
+        setMeasuredDimension(width, width);
     }
 
     private void init() {
