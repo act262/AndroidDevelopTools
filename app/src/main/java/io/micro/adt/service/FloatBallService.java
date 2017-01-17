@@ -69,7 +69,7 @@ public class FloatBallService extends Service implements View.OnClickListener, F
         layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
         layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         layoutParams.gravity = Gravity.TOP | GravityCompat.START;
-        layoutParams.type = WindowManager.LayoutParams.TYPE_PHONE;
+        layoutParams.type = WindowManager.LayoutParams.TYPE_TOAST;
         layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                 | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
 
