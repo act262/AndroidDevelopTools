@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import io.micro.adt.ui.MainActivity;
+import io.micro.adt.util.AppUtil;
 import io.micro.adt.widget.FloatBallView;
 
 /**
@@ -94,7 +95,9 @@ public class FloatBallService extends Service implements View.OnClickListener, F
 
     @Override
     public void onClick(View v) {
-        MainActivity.goHome(getApplicationContext());
+        // 如果当前Activity已在展示则销毁
+        boolean atFront = AppUtil.isTopActivity(getApplicationContext(), MainActivity.class);
+        MainActivity.goHome(getApplicationContext(), atFront);
     }
 
     @Override

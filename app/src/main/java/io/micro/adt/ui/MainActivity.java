@@ -6,15 +6,15 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import io.micro.adt.R;
 import io.micro.adt.service.FloatBallService;
 
-public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuItemClickListener, CompoundButton.OnCheckedChangeListener {
+public class MainActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
+
+    private static final String EXTRA_FINISH = "EXTRA_FINISH";
 
     private SharedPreferences preferences;
 
@@ -24,9 +24,6 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolBar);
-        toolbar.inflateMenu(R.menu.menu_main);
-        toolbar.setOnMenuItemClickListener(this);
 
         Switch floatBallSwitch = (Switch) findViewById(R.id.switchFloatBall);
         floatBallSwitch.setOnCheckedChangeListener(this);
@@ -37,12 +34,12 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     }
 
     @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()) {
-            default:
-                // no-op
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        boolean finish = intent.getBooleanExtra(EXTRA_FINISH, false);
+        if (finish) {
+            finish();
         }
-        return true;
     }
 
     @Override
@@ -60,9 +57,11 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         }
     }
 
-    public static void goHome(Context context) {
+    public static void goHome(Context context, boolean needFinish) {
         Intent intent = new Intent(context, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(EXTRA_FINISH, needFinish);
         context.startActivity(intent);
+
     }
 }
