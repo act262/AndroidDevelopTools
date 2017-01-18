@@ -2,14 +2,16 @@ package io.micro.adt.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
+
+import io.micro.adt.R;
 
 /**
  * 悬浮球
@@ -51,9 +53,8 @@ public class FloatBallView extends View {
 
     private void init() {
         touchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
-
         mPaint = new Paint();
-        mPaint.setColor(Color.GREEN);
+        mPaint.setColor(ResourcesCompat.getColor(getResources(), R.color.colorAccent, null));
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setAntiAlias(true);
     }

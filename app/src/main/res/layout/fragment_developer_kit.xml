@@ -13,7 +13,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="开发者选项" />
+            android:text="@string/developer_options" />
     </LinearLayout>
 
     <GridView
@@ -21,8 +21,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:horizontalSpacing="20dp"
+        android:horizontalSpacing="10dp"
         android:numColumns="4"
+        android:padding="10dp"
         android:verticalSpacing="20dp"
         tools:listitem="@layout/item_dev" />
 </LinearLayout>
