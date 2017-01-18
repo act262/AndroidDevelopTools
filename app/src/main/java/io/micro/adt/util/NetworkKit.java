@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class NetworkKit {
 
-    public static WifiManager getWifiManager(Context context) {
+    private static WifiManager getWifiManager(Context context) {
         return (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
     }
 
@@ -38,6 +38,40 @@ public class NetworkKit {
         }
     }
 
+    public static String getProxyHost(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return getProxyHostL(context);
+        }
+        return "";
+    }
+
+    public static String getProxyPort(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return getProxyPortL(context);
+        }
+        return "";
+    }
+
+    private static ProxyInfo getProxyInfo(Context context) {
+        ProxyInfo info = null;
+        WifiManager wifiManager = getWifiManager(context);
+        WifiConfiguration wifiConfiguration = getCurrentConfiguration(wifiManager);
+        try {
+            Method httpProxy = Class.forName("android.net.wifi.WifiConfiguration").getMethod("getHttpProxy");
+            info = (ProxyInfo) httpProxy.invoke(wifiConfiguration);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return info;
+    }
+
+    // 需要System Uid才能修改?
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private static void setProxyL(Context context, boolean enabled, String host, int port) {
         WifiManager wifiManager = getWifiManager(context);
@@ -46,16 +80,24 @@ public class NetworkKit {
             // ProxyInfo
             ProxyInfo proxyInfo = ProxyInfo.buildDirectProxy(host, port);
 
+            //  enum: NONE,STATIC,UNASSIGNED,PAC
+            Class<?> settingsCls = Class.forName("android.net.IpConfiguration$ProxySettings");
+            Object[] enumConstants = settingsCls.getEnumConstants();
+
             // WifiConfiguration.setHttpProxy
             Method setHttpProxy = Class.forName("android.net.wifi.WifiConfiguration")
-                    .getMethod("setHttpProxy", ProxyInfo.class);
-            setHttpProxy.invoke(wifiConfiguration, enabled ? proxyInfo : null);
+                    .getMethod("setProxy", settingsCls, ProxyInfo.class);
+            if (enabled) {
+                setHttpProxy.invoke(wifiConfiguration, enumConstants[1], proxyInfo); // setProxy(STATIC,proxy)
+            } else {
+                setHttpProxy.invoke(wifiConfiguration, enumConstants[0], proxyInfo); // setProxy(NONE,proxy)
+            }
 
-//            wifiManager.saveConfiguration(); // 不知道为啥没效果这个?
             Class<?> listenerCls = Class.forName("android.net.wifi.WifiManager$ActionListener");
             Method save = Class.forName("android.net.wifi.WifiManager")
                     .getMethod("save", WifiConfiguration.class, listenerCls);
             save.invoke(wifiManager, wifiConfiguration, null);
+//            wifiManager.saveConfiguration(); // 不知道为啥没效果这个?
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -67,10 +109,22 @@ public class NetworkKit {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private static String getProxyHostL(Context context) {
+        ProxyInfo proxyInfo = getProxyInfo(context);
+        return proxyInfo == null ? "" : proxyInfo.getHost();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private static String getProxyPortL(Context context) {
+        ProxyInfo proxyInfo = getProxyInfo(context);
+        return proxyInfo == null ? "" : String.valueOf(proxyInfo.getPort());
+    }
+
     /**
      * 当前连接的 WiFi 配置
      */
-    public static WifiConfiguration getCurrentConfiguration(WifiManager wifiManager) {
+    private static WifiConfiguration getCurrentConfiguration(WifiManager wifiManager) {
         WifiInfo connectionInfo = wifiManager.getConnectionInfo();
         List<WifiConfiguration> configuredNetworks = wifiManager.getConfiguredNetworks();
         for (WifiConfiguration configuredNetwork : configuredNetworks) {

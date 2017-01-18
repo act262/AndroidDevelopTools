@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.micro.adt">
+    package="io.micro.adt"
+    android:sharedUserId="android.uid.system">
     <!-- 需要开启root的手机才能安装 -->
     <!--android:sharedUserId="android.uid.system"-->
 
