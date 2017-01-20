@@ -5,6 +5,8 @@ import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 
 /**
@@ -43,5 +45,28 @@ public class AppUtil {
      */
     public static boolean isTopActivity(Context context, Class<? extends Activity> clazz) {
         return isTopActivity(context, clazz.getName());
+    }
+
+    public static ActivityManager getActivityManager(Context context) {
+        return (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+    }
+
+    public static void clearAppData(Context context, String pkg) {
+        ActivityManager activityManager = getActivityManager(context);
+        try {
+            Class<?> cls = Class.forName("android.app.ActivityManager");
+            Class<?> observerCls = Class.forName("android.content.pm.IPackageDataObserver");
+            Method clearApplicationUserData = cls.getMethod("clearApplicationUserData", String.class, observerCls);
+            // ActivityManager.clearApplicationUserData(pkg,observer)
+            clearApplicationUserData.invoke(activityManager, pkg, null);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 }

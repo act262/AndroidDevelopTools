@@ -11,4 +11,7 @@
     <string name="default_proxy_port">8888</string>
     <string name="setting_network">网络设置</string>
     <string name="developer_options">开发者选项</string>
+    <string name="clear">Clear</string>
+    <string name="restart">Restart</string>
+    <string name="restart_or_clear_app">重启app/清除数据</string>
 </resources>

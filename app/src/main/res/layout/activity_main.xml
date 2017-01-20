@@ -40,4 +40,10 @@
         android:tag="fragment_network_kit"
         tools:layout="@layout/fragment_network_kit" />
 
+    <fragment
+        class="io.micro.adt.ui.AppKitFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:tag="fragment_app_kit"
+        tools:layout="@layout/fragment_app_kit" />
 </LinearLayout>
