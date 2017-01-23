@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         style="@style/CategoryTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -13,17 +13,22 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/developer_options" />
-    </LinearLayout>
+            android:text="@string/developer_options"/>
 
-    <GridView
-        android:id="@+id/listView"
+        <TextView
+            android:id="@+id/btn_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@null"
+            android:text="@string/more"
+            tools:ignore="RelativeOverlap,RtlHardcoded"/>
+    </RelativeLayout>
+
+    <GridLayout
+        android:id="@+id/gridLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:horizontalSpacing="10dp"
-        android:numColumns="4"
-        android:padding="10dp"
-        android:verticalSpacing="20dp"
-        tools:listitem="@layout/item_dev" />
+        android:columnCount="4"/>
+
 </LinearLayout>

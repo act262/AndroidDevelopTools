@@ -1,9 +1,19 @@
 <resources>
     <string name="app_name">Android开发助手</string>
-    <string name="developer">开发人员选项</string>
     <string name="float_ball">开启悬浮球</string>
     <string name="float_ball_on">开启悬浮球</string>
     <string name="float_ball_off">关闭悬浮球</string>
+
+    <!-- developer -->
+    <string name="developer">开发人员选项</string>
+    <string name="more">More</string>
+    <string name="usb_debug">USB调试</string>
+    <string name="keep_screen">保持唤醒状态</string>
+    <string name="debug_layout">显示布局边界</string>
+    <string name="debug_gpu_overdraw">调试GPU过度绘制</string>
+    <string name="debug_gpu_profile">GPU呈现模式分析</string>
+
+    <!-- network -->
     <string name="turn_off_proxy">关闭代理</string>
     <string name="turn_on_proxy">开启代理</string>
     <string name="hint_proxy_host">Host</string>
@@ -11,6 +21,8 @@
     <string name="default_proxy_port">8888</string>
     <string name="setting_network">网络设置</string>
     <string name="developer_options">开发者选项</string>
+
+    <string name="app_debug">App调试</string>
     <string name="clear">Clear</string>
     <string name="restart">Restart</string>
     <string name="restart_or_clear_app">重启app/清除数据</string>

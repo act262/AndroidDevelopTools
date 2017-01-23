@@ -5,12 +5,15 @@ import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import io.android.shell.cmd.CmdSet;
+
 /**
- *
+ * App 相关设置功能
  */
 public class AppUtil {
 
@@ -66,6 +69,22 @@ public class AppUtil {
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void clearAppData(String pkg) {
+        try {
+            CmdSet.clearAppData(pkg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void restartApp(String pkg) {
+        try {
+            CmdSet.restartApp(pkg);
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

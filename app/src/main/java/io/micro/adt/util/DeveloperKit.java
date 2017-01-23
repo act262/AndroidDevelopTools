@@ -13,14 +13,18 @@ import android.os.SystemProperties;
 import android.provider.Settings;
 import android.util.Log;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
+import io.android.shell.cmd.SettingsCmds;
 
 /**
  * 开发者选项控制
  *
  * @author act262@gmail.com
  */
+@SuppressWarnings("unused")
 public class DeveloperKit {
 
     private static final String FALSE = "false";
@@ -40,6 +44,54 @@ public class DeveloperKit {
     }
 
     /**
+     * USB调试开关是否开启,API17+
+     */
+    public static boolean isAdbEnabled(Context context) {
+        int enabled = 0;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            enabled = Settings.Global.getInt(context.getContentResolver(), Settings.Global.ADB_ENABLED, enabled);
+        }
+        return enabled == 1;
+    }
+
+    /**
+     * USB调试开关,需要root权限,API17+
+     */
+    public static void setAdbEnabled(boolean enabled) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            try {
+                SettingsCmds.putStringGlobal(Settings.Global.ADB_ENABLED, enabled ? "1" : "0");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * 是否保持屏幕唤醒状态,API17+
+     */
+    public static boolean isKeepScreenOn(Context context) {
+        int enabled = 0;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            enabled = Settings.Global.getInt(context.getContentResolver(), Settings.Global.STAY_ON_WHILE_PLUGGED_IN, enabled);
+        }
+        return enabled == (BatteryManager.BATTERY_PLUGGED_AC | BatteryManager.BATTERY_PLUGGED_USB);
+    }
+
+    /**
+     * 保持屏幕唤醒状态,需要root权限,API17+
+     */
+    public static void keepScreenOn(boolean enabled) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            try {
+                SettingsCmds.putStringGlobal(Settings.Global.STAY_ON_WHILE_PLUGGED_IN, enabled ? (BatteryManager.BATTERY_PLUGGED_AC | BatteryManager.BATTERY_PLUGGED_USB) + "" : "0");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
      * 显示布局边界
      */
     public static boolean debugLayout() {
@@ -49,8 +101,8 @@ public class DeveloperKit {
     /**
      * 开启/关闭:显示布局边界
      */
-    public static void setDebugLayout(boolean bool) {
-        SystemProperties.set(DEBUG_LAYOUT_PROPERTY, Boolean.toString(bool));
+    public static void setDebugLayout(boolean enabled) {
+        SystemProperties.set(DEBUG_LAYOUT_PROPERTY, Boolean.toString(enabled));
         refresh();
     }
 
@@ -64,8 +116,8 @@ public class DeveloperKit {
     /**
      * 打开/关闭:显示GPU过度绘制
      */
-    public static void setDebugOverdraw(boolean bool) {
-        SystemProperties.set(DEBUG_OVERDRAW_PROPERTY, bool ? OVERDRAW_PROPERTY_SHOW : FALSE);
+    public static void setDebugOverdraw(boolean enabled) {
+        SystemProperties.set(DEBUG_OVERDRAW_PROPERTY, enabled ? OVERDRAW_PROPERTY_SHOW : FALSE);
         refresh();
     }
 
@@ -79,39 +131,9 @@ public class DeveloperKit {
     /**
      * 打开/关闭:GPU呈现模式分析(在屏幕中显示为条)
      */
-    public static void setProfile(boolean bool) {
-        SystemProperties.set(PROFILE_PROPERTY, bool ? PROFILE_PROPERTY_VISUALIZE_BARS : FALSE);
+    public static void setProfile(boolean enabled) {
+        SystemProperties.set(PROFILE_PROPERTY, enabled ? PROFILE_PROPERTY_VISUALIZE_BARS : FALSE);
         refresh();
-    }
-
-    /**
-     * USB调试开关,AndroidManifest配置android:sharedUserId="android.uid.system",
-     * 使用权限:<uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
-     */
-    public static void setAdbEnable(Context context, boolean enable) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            try {
-                Settings.Global.putInt(context.getContentResolver(),
-                        Settings.Global.ADB_ENABLED, enable ? 1 : 0);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    /**
-     * 保持唤醒状态,配置同AdbEnable方法
-     */
-    public static void keepScreenOn(Context context, boolean check) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            try {
-                Settings.Global.putInt(context.getContentResolver(),
-                        Settings.Global.STAY_ON_WHILE_PLUGGED_IN,
-                        check ? (BatteryManager.BATTERY_PLUGGED_AC | BatteryManager.BATTERY_PLUGGED_USB) : 0);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     /**

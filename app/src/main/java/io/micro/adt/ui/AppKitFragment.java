@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 
-import io.android.adb.CmdSet;
 import io.micro.adt.R;
+import io.micro.adt.util.AppUtil;
 
 /**
  * App 相关功能页面
@@ -27,15 +27,17 @@ public class AppKitFragment extends BaseFragment {
         final CheckBox restartCheckBox = findView(R.id.cb_restart);
         final CheckBox clearCheckBox = findView(R.id.cb_clear);
 
-        Button restartBtn = findView(R.id.btn_restart);
+        Button restartBtn = findView(R.id.btn_reset);
         restartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (clearCheckBox.isChecked()) {
-                    CmdSet.clearAppData(getActivity().getPackageName());
+                    // TODO: 2017/1/23 Not yet implement
+                    AppUtil.clearAppData("");
                 }
                 if (restartCheckBox.isChecked()) {
-                    CmdSet.restartApp(getActivity().getPackageName() + getActivity().getClass().getName());
+                    // TODO: 2017/1/23 Not yet implement
+                    AppUtil.restartApp("");
                 }
             }
         });
