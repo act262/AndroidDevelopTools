@@ -13,7 +13,7 @@ public class CmdExecutor implements ICmdExecutor {
 
     @Override
     public void exec(String... cmd) throws IOException {
-        Runtime.getRuntime().exec(cmd);
+        Runtime.getRuntime().exec(cmd[0]);
     }
 
 }

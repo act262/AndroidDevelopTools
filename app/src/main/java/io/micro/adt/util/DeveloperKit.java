@@ -18,6 +18,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import io.android.shell.cmd.SettingsCmds;
+import io.android.shell.cmd.SystemPropertiesCmds;
 
 /**
  * 开发者选项控制
@@ -102,7 +103,15 @@ public class DeveloperKit {
      * 开启/关闭:显示布局边界
      */
     public static void setDebugLayout(boolean enabled) {
-        SystemProperties.set(DEBUG_LAYOUT_PROPERTY, Boolean.toString(enabled));
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+            SystemProperties.set(DEBUG_LAYOUT_PROPERTY, Boolean.toString(enabled));
+        } else {
+            try {
+                SystemPropertiesCmds.set(DEBUG_LAYOUT_PROPERTY, String.valueOf(enabled));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         refresh();
     }
 
@@ -117,7 +126,16 @@ public class DeveloperKit {
      * 打开/关闭:显示GPU过度绘制
      */
     public static void setDebugOverdraw(boolean enabled) {
-        SystemProperties.set(DEBUG_OVERDRAW_PROPERTY, enabled ? OVERDRAW_PROPERTY_SHOW : FALSE);
+        String val = enabled ? OVERDRAW_PROPERTY_SHOW : FALSE;
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+            SystemProperties.set(DEBUG_OVERDRAW_PROPERTY, val);
+        } else {
+            try {
+                SystemPropertiesCmds.set(DEBUG_OVERDRAW_PROPERTY, val);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         refresh();
     }
 
@@ -132,7 +150,16 @@ public class DeveloperKit {
      * 打开/关闭:GPU呈现模式分析(在屏幕中显示为条)
      */
     public static void setProfile(boolean enabled) {
-        SystemProperties.set(PROFILE_PROPERTY, enabled ? PROFILE_PROPERTY_VISUALIZE_BARS : FALSE);
+        String val = enabled ? PROFILE_PROPERTY_VISUALIZE_BARS : FALSE;
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+            SystemProperties.set(PROFILE_PROPERTY, val);
+        } else {
+            try {
+                SystemPropertiesCmds.set(PROFILE_PROPERTY, val);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         refresh();
     }
 
