@@ -12,6 +12,8 @@
     <string name="debug_layout">显示布局边界</string>
     <string name="debug_gpu_overdraw">调试GPU过度绘制</string>
     <string name="debug_gpu_profile">GPU呈现模式分析</string>
+    <string name="debug_stric_mode">启用严格模式</string>
+    <string name="debug_destroy_activity">不保留活动</string>
 
     <!-- network -->
     <string name="turn_off_proxy">关闭代理</string>

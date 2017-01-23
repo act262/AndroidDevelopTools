@@ -1,16 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string-array name="dev_desc">
-
-        <item>GPU呈现模式分析</item>
-        <item>启用严格模式</item>
-        <item>不保留活动</item>
-    </string-array>
-
-    <integer-array name="dev_icon">
-        <item>@drawable/ic_developer_gpu_profile</item>
-        <item>@drawable/ic_developer_strict</item>
-        <item>@drawable/ic_developer_destroy_activity</item>
-    </integer-array>
 </resources>

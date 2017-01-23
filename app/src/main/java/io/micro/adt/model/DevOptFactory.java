@@ -1,6 +1,7 @@
 package io.micro.adt.model;
 
 import android.content.Context;
+import android.os.Build;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,17 +19,22 @@ public class DevOptFactory {
 
     public static List<DevItemView> createAll(Context context) {
         ArrayList<DevItemView> list = new ArrayList<>();
-        list.add(new DevItemView(context, new UsbDevItem()));
-        list.add(new DevItemView(context, new ScreenDevItem()));
-        list.add(new DevItemView(context, new DebugLayoutDevItem()));
+        list.add(new DevItemView(context, new DebugUsb()));
+        list.add(new DevItemView(context, new DebugKeepScreen()));
+        list.add(new DevItemView(context, new DebugLayout()));
         list.add(new DevItemView(context, new DebugOverdraw()));
         list.add(new DevItemView(context, new DebugProfile()));
+        list.add(new DevItemView(context, new DebugStrict()));
+        // target api > 19
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+            list.add(new DevItemView(context, new DebugDestroyActivity()));
+        }
         return list;
     }
 
-    private static class UsbDevItem extends DevItem {
+    private static class DebugUsb extends DevItem {
 
-        UsbDevItem() {
+        DebugUsb() {
             icon = R.drawable.ic_developer_usb;
             desc = R.string.usb_debug;
         }
@@ -44,9 +50,9 @@ public class DevOptFactory {
         }
     }
 
-    private static class ScreenDevItem extends DevItem {
+    private static class DebugKeepScreen extends DevItem {
 
-        ScreenDevItem() {
+        DebugKeepScreen() {
             icon = R.drawable.ic_developer_keep_screen_on;
             desc = R.string.keep_screen;
         }
@@ -62,8 +68,8 @@ public class DevOptFactory {
         }
     }
 
-    private static class DebugLayoutDevItem extends DevItem {
-        DebugLayoutDevItem() {
+    private static class DebugLayout extends DevItem {
+        DebugLayout() {
             icon = R.drawable.ic_developer_debug_layout;
             desc = R.string.debug_layout;
         }
@@ -110,6 +116,40 @@ public class DevOptFactory {
         @Override
         public void setActivated(Context context, boolean activated) {
             DeveloperKit.setProfile(activated);
+        }
+    }
+
+    private static class DebugStrict extends DevItem {
+        DebugStrict() {
+            icon = R.drawable.ic_developer_strict;
+            desc = R.string.debug_stric_mode;
+        }
+
+        @Override
+        public boolean isActivated(Context context) {
+            return DeveloperKit.isStrictMode();
+        }
+
+        @Override
+        public void setActivated(Context context, boolean activated) {
+            DeveloperKit.setStrictMode(activated);
+        }
+    }
+
+    private static class DebugDestroyActivity extends DevItem {
+        DebugDestroyActivity() {
+            icon = R.drawable.ic_developer_destroy_activity;
+            desc = R.string.debug_destroy_activity;
+        }
+
+        @Override
+        public boolean isActivated(Context context) {
+            return DeveloperKit.isDestroyActivities();
+        }
+
+        @Override
+        public void setActivated(Context context, boolean activated) {
+            DeveloperKit.setDestroyActivities(activated);
         }
     }
 }

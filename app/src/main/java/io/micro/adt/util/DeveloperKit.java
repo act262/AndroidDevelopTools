@@ -39,7 +39,7 @@ public class DeveloperKit {
     private static final String PROFILE_PROPERTY_VISUALIZE_BARS = "visual_bars";
 
     /* copy from StrictMode.VISUAL_PROPERTY */
-    public static final String VISUAL_PROPERTY = "persist.sys.strictmode.visual";
+    public static final String STRICT_MODE_VISUAL_PROPERTY = "persist.sys.strictmode.visual";
 
     private DeveloperKit() {
     }
@@ -164,6 +164,13 @@ public class DeveloperKit {
     }
 
     /**
+     * 是否开启严格模式
+     */
+    public static boolean isStrictMode() {
+        return "1".equals(SystemProperties.get(STRICT_MODE_VISUAL_PROPERTY));
+    }
+
+    /**
      * 严格模式
      */
     public static void setStrictMode(boolean enable) {
@@ -182,6 +189,14 @@ public class DeveloperKit {
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 是否开启不保留活动
+     */
+    public static boolean isDestroyActivities() {
+        // TODO: 2017/1/24 0024 I don't know how fetch this flag
+        return false;
     }
 
     /**
