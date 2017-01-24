@@ -56,6 +56,10 @@ public class NetworkKit {
         ProxyInfo info = null;
         WifiManager wifiManager = getWifiManager(context);
         WifiConfiguration wifiConfiguration = getCurrentConfiguration(wifiManager);
+        // fix wifi disabled
+        if (wifiConfiguration == null) {
+            return null;
+        }
         try {
             Method httpProxy = Class.forName("android.net.wifi.WifiConfiguration").getMethod("getHttpProxy");
             info = (ProxyInfo) httpProxy.invoke(wifiConfiguration);
@@ -127,9 +131,12 @@ public class NetworkKit {
     private static WifiConfiguration getCurrentConfiguration(WifiManager wifiManager) {
         WifiInfo connectionInfo = wifiManager.getConnectionInfo();
         List<WifiConfiguration> configuredNetworks = wifiManager.getConfiguredNetworks();
-        for (WifiConfiguration configuredNetwork : configuredNetworks) {
-            if (configuredNetwork.networkId == connectionInfo.getNetworkId()) {
-                return configuredNetwork;
+        // fix wifi disabled
+        if (configuredNetworks != null) {
+            for (WifiConfiguration configuredNetwork : configuredNetworks) {
+                if (configuredNetwork.networkId == connectionInfo.getNetworkId()) {
+                    return configuredNetwork;
+                }
             }
         }
         return null;

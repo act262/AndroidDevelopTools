@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:ignore="RtlHardcoded">
 
     <LinearLayout
         style="@style/CategoryTitle"
@@ -13,7 +15,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/setting_network" />
+            android:text="@string/setting_network"/>
     </LinearLayout>
 
     <LinearLayout
@@ -27,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textOff="@string/turn_off_proxy"
-            android:textOn="@string/turn_on_proxy" />
+            android:textOn="@string/turn_on_proxy"/>
 
         <EditText
             android:id="@+id/et_host"
@@ -35,20 +37,20 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_weight="3"
-            android:gravity="center"
+            android:gravity="right"
             android:hint="@string/hint_proxy_host"
-            android:inputType="numberSigned"
-            tools:ignore="RtlHardcoded" />
+            android:inputType="text"
+            tools:ignore="RtlHardcoded"/>
 
         <EditText
             android:id="@+id/et_port"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:gravity="center"
+            android:gravity="right"
             android:hint="@string/hint_proxy_port"
             android:inputType="number"
-            android:text="@string/default_proxy_port" />
+            android:text="@string/default_proxy_port"/>
     </LinearLayout>
 
 </LinearLayout>
