@@ -1,11 +1,13 @@
 package io.micro.adt.util;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ProxyInfo;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.provider.Settings;
 import android.support.annotation.RequiresApi;
 import android.widget.Toast;
 
@@ -147,6 +149,17 @@ public class NetworkKit {
      */
     public static void setWifiEnabled(Context context, boolean enabled) {
         getWifiManager(context).setWifiEnabled(enabled);
+    }
+
+    /**
+     * 打开WiFi设置页面
+     */
+    public static void openWifiSettings(Context context) {
+        try {
+            context.startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private static void dumpWifi(WifiManager wifiManager) {

@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:ignore="RtlHardcoded">
 
-    <LinearLayout
+    <RelativeLayout
         style="@style/CategoryTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -16,7 +16,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/setting_network"/>
-    </LinearLayout>
+
+        <TextView
+            android:id="@+id/btn_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="@string/more"/>
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

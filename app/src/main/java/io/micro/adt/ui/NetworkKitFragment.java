@@ -80,6 +80,13 @@ public class NetworkKitFragment extends BaseFragment implements CompoundButton.O
 
         proxyButton.setOnCheckedChangeListener(this);
 
+        View moreBtn = findView(R.id.btn_more);
+        moreBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NetworkKit.openWifiSettings(getActivity());
+            }
+        });
         return mRootView;
     }
 
