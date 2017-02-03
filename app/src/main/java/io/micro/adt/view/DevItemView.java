@@ -53,10 +53,11 @@ public class DevItemView extends FrameLayout implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         boolean activated = item.isActivated(getContext());
-        boolean newState = !activated;
-        this.setActivated(newState);
-        item.setActivated(getContext(), newState);
-        icon.setColorFilter(newState ? ENABLED_FILTER : DISABLED_FILTER);
+        item.setActivated(getContext(), !activated);
+
+        activated = item.isActivated(getContext());
+        this.setActivated(activated);
+        icon.setColorFilter(activated ? ENABLED_FILTER : DISABLED_FILTER);
     }
 
 }
