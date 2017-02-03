@@ -208,20 +208,28 @@ public class DeveloperKit {
      * 不保留Activity,用户离开后即销毁每个Activity,API21+
      */
     public static void setDestroyActivities(boolean enabled) {
+        // 需要系统系统签名的权限
+//        try {
+//            Class<?> clz = Class.forName("android.app.ActivityManagerNative");
+//            Method getDefault = clz.getMethod("getDefault");
+//            Object activityManagerNative = getDefault.invoke(null);
+//
+//            Method setAlwaysFinish = clz.getMethod("setAlwaysFinish", boolean.class);
+//            setAlwaysFinish.invoke(activityManagerNative, enabled);
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (NoSuchMethodException e) {
+//            e.printStackTrace();
+//        } catch (InvocationTargetException e) {
+//            e.printStackTrace();
+//        } catch (IllegalAccessException e) {
+//            e.printStackTrace();
+//        }
         try {
-            Class<?> clz = Class.forName("android.app.ActivityManagerNative");
-            Method getDefault = clz.getMethod("getDefault");
-            Object activityManagerNative = getDefault.invoke(null);
-
-            Method setAlwaysFinish = clz.getMethod("setAlwaysFinish", boolean.class);
-            setAlwaysFinish.invoke(activityManagerNative, enabled);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                SettingsCmds.putStringGlobal(Settings.Global.ALWAYS_FINISH_ACTIVITIES, enabled ? "1" : "0");
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

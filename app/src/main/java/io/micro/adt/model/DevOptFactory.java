@@ -2,6 +2,7 @@ package io.micro.adt.model;
 
 import android.content.Context;
 import android.os.Build;
+import android.os.SystemClock;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -152,6 +153,8 @@ public class DevOptFactory {
         @Override
         public void setActivated(Context context, boolean activated) {
             DeveloperKit.setDestroyActivities(activated);
+            // 改变状态后需要一定时间响应
+            SystemClock.sleep(2000);
         }
     }
 }
