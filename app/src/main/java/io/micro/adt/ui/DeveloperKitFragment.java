@@ -12,6 +12,7 @@ import java.util.List;
 import io.micro.adt.R;
 import io.micro.adt.model.DevOptFactory;
 import io.micro.adt.util.DeveloperKit;
+import io.micro.adt.view.DevItemView;
 
 /**
  * 开发者选项页面

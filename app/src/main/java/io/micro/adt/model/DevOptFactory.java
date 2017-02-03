@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.micro.adt.R;
-import io.micro.adt.ui.DevItemView;
 import io.micro.adt.util.DeveloperKit;
+import io.micro.adt.view.DevItemView;
 
 /**
  * Developer Factory
@@ -23,10 +23,10 @@ public class DevOptFactory {
         list.add(new DevItemView(context, new DebugKeepScreen()));
         list.add(new DevItemView(context, new DebugLayout()));
         list.add(new DevItemView(context, new DebugOverdraw()));
-        list.add(new DevItemView(context, new DebugProfile()));
+        list.add(new DevItemView(context, new DebugGPUProfile()));
         list.add(new DevItemView(context, new DebugStrict()));
-        // target api > 19
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+        // target api >= 21
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             list.add(new DevItemView(context, new DebugDestroyActivity()));
         }
         return list;
@@ -102,20 +102,20 @@ public class DevOptFactory {
         }
     }
 
-    private static class DebugProfile extends DevItem {
-        DebugProfile() {
+    private static class DebugGPUProfile extends DevItem {
+        DebugGPUProfile() {
             icon = R.drawable.ic_developer_gpu_profile;
             desc = R.string.debug_gpu_profile;
         }
 
         @Override
         public boolean isActivated(Context context) {
-            return DeveloperKit.debugProfile();
+            return DeveloperKit.debugGPUProfile();
         }
 
         @Override
         public void setActivated(Context context, boolean activated) {
-            DeveloperKit.setProfile(activated);
+            DeveloperKit.setGPUProfile(activated);
         }
     }
 
@@ -140,11 +140,13 @@ public class DevOptFactory {
         DebugDestroyActivity() {
             icon = R.drawable.ic_developer_destroy_activity;
             desc = R.string.debug_destroy_activity;
+
+            api = Build.VERSION_CODES.LOLLIPOP;
         }
 
         @Override
         public boolean isActivated(Context context) {
-            return DeveloperKit.isDestroyActivities();
+            return DeveloperKit.isDestroyActivities(context);
         }
 
         @Override
