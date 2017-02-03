@@ -21,6 +21,9 @@ public class DevItemView extends FrameLayout implements View.OnClickListener {
 
     protected DevItem item;
 
+    private static final ColorFilter ENABLED_FILTER = ColorUtil.getEnabledFilter1();
+    private static final ColorFilter DISABLED_FILTER = ColorUtil.getDisabledFilter1();
+
     public DevItemView(Context context) {
         this(context, new DevItem());
     }
@@ -42,21 +45,18 @@ public class DevItemView extends FrameLayout implements View.OnClickListener {
         icon.setImageResource(item.icon);
         text.setText(item.desc);
         this.setActivated(activated);
+
+        // 这里控制不同状态下的图标颜色变化
+        icon.setColorFilter(activated ? ENABLED_FILTER : DISABLED_FILTER);
     }
 
     @Override
     public void onClick(View v) {
         boolean activated = item.isActivated(getContext());
-        this.setActivated(!activated);
-        item.setActivated(getContext(), !activated);
+        boolean newState = !activated;
+        this.setActivated(newState);
+        item.setActivated(getContext(), newState);
+        icon.setColorFilter(newState ? ENABLED_FILTER : DISABLED_FILTER);
     }
 
-    @Override
-    public void dispatchSetActivated(boolean activated) {
-        super.dispatchSetActivated(activated);
-        // 这里控制不同状态下的图标颜色变化
-        ColorFilter colorFilter = activated ?
-                ColorUtil.getEnabledFilter1() : ColorUtil.getDisabledFilter1();
-        icon.setColorFilter(colorFilter);
-    }
 }
