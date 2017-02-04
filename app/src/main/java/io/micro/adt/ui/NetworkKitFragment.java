@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.ToggleButton;
 
 import io.micro.adt.R;
 import io.micro.adt.util.DFormatter;
@@ -23,6 +24,8 @@ import io.micro.adt.util.text.SimpleTextWatcher;
 public class NetworkKitFragment extends BaseFragment implements CompoundButton.OnCheckedChangeListener {
 
     private static final String PORT_NUMBER = "\\d{1,5}";
+
+    private ToggleButton wifiToggleBtn;
     private Switch proxyButton;
     private EditText hostText;
     private EditText portText;
@@ -87,6 +90,16 @@ public class NetworkKitFragment extends BaseFragment implements CompoundButton.O
                 NetworkKit.openWifiSettings(getActivity());
             }
         });
+
+        wifiToggleBtn = findView(R.id.toggleWifi);
+        wifiToggleBtn.setChecked(NetworkKit.isWifiEnabled(getActivity()));
+        toggleWifi(NetworkKit.isWifiEnabled(getActivity()));
+        wifiToggleBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                toggleWifi(isChecked);
+            }
+        });
         return mRootView;
     }
 
@@ -133,6 +146,11 @@ public class NetworkKitFragment extends BaseFragment implements CompoundButton.O
 
         // 开启状态必须指定HOST和port
         if (isChecked) {
+            if (!NetworkKit.isWifiEnabled(getActivity())) {
+                proxyButton.setChecked(false);
+                preferences.edit().putBoolean(KEY_NETWORK_PROXY_CHECK, false).apply();
+                return;
+            }
             if (TextUtils.isEmpty(host) || !validHost(host)) {
                 hostErrorTip();
                 proxyButton.setChecked(false);
@@ -145,6 +163,7 @@ public class NetworkKitFragment extends BaseFragment implements CompoundButton.O
                 preferences.edit().putBoolean(KEY_NETWORK_PROXY_CHECK, false).apply();
                 return;
             }
+
             preferences.edit()
                     .putString(KEY_NETWORK_PROXY_HOST, host)
                     .putString(KEY_NETWORK_PROXY_PORT, port)
@@ -153,6 +172,15 @@ public class NetworkKitFragment extends BaseFragment implements CompoundButton.O
 
         preferences.edit().putBoolean(KEY_NETWORK_PROXY_CHECK, isChecked).apply();
         NetworkKit.setProxy(getActivity(), isChecked, host, DFormatter.parseInt(port));
+    }
+
+
+    private void toggleWifi(boolean isChecked) {
+        proxyButton.setEnabled(isChecked);
+        hostText.setEnabled(isChecked);
+        portText.setEnabled(isChecked);
+
+        NetworkKit.setWifiEnabled(getActivity(), isChecked);
     }
 
     public static final String KEY_NETWORK_PROXY_HOST = "proxy_host";

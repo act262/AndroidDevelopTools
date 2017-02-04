@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ProxyInfo;
 import android.net.wifi.WifiConfiguration;
-import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.provider.Settings;
@@ -27,16 +26,37 @@ public class NetworkKit {
     }
 
     /**
+     * 是否开启/关闭WIFI状态
+     */
+    public static boolean isWifiEnabled(Context context) {
+        return getWifiManager(context).isWifiEnabled();
+    }
+
+    /**
+     * 关闭/启用 WiFi
+     */
+    public static void setWifiEnabled(Context context, boolean enabled) {
+        getWifiManager(context).setWifiEnabled(enabled);
+    }
+
+    /**
      * 设置网络代理
      *
      * @param host 主机名或者IP
      * @param port 端口
      */
     public static void setProxy(Context context, boolean enabled, String host, int port) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            setProxyL(context, enabled, host, port);
-        } else {
-            Toast.makeText(context, "current device not support setup proxy", Toast.LENGTH_SHORT).show();
+        if (!isWifiEnabled(context)) return;
+
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                setProxyL(context, enabled, host, port);
+            } else {
+                Toast.makeText(context, "current device not support setup proxy", Toast.LENGTH_SHORT).show();
+                setProxy17(context, enabled, host, port);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -102,8 +122,11 @@ public class NetworkKit {
             Class<?> listenerCls = Class.forName("android.net.wifi.WifiManager$ActionListener");
             Method save = Class.forName("android.net.wifi.WifiManager")
                     .getMethod("save", WifiConfiguration.class, listenerCls);
-            save.invoke(wifiManager, wifiConfiguration, null);
-//            wifiManager.saveConfiguration(); // 不知道为啥没效果这个?
+//            save.invoke(wifiManager, wifiConfiguration, null);
+            wifiManager.saveConfiguration(); // 不知道为啥没效果这个?
+//            wifiManager.updateNetwork(getCurrentConfiguration(wifiManager));
+            wifiManager.disconnect();
+            wifiManager.reconnect();
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -113,6 +136,10 @@ public class NetworkKit {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void setProxy17(Context context, boolean enabled, String host, int port) {
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -131,24 +158,18 @@ public class NetworkKit {
      * 当前连接的 WiFi 配置
      */
     private static WifiConfiguration getCurrentConfiguration(WifiManager wifiManager) {
-        WifiInfo connectionInfo = wifiManager.getConnectionInfo();
+        if (!wifiManager.isWifiEnabled()) {
+            return null;
+        }
         List<WifiConfiguration> configuredNetworks = wifiManager.getConfiguredNetworks();
-        // fix wifi disabled
-        if (configuredNetworks != null) {
-            for (WifiConfiguration configuredNetwork : configuredNetworks) {
-                if (configuredNetwork.networkId == connectionInfo.getNetworkId()) {
-                    return configuredNetwork;
-                }
+        // current network
+        int networkId = wifiManager.getConnectionInfo().getNetworkId();
+        for (WifiConfiguration configuredNetwork : configuredNetworks) {
+            if (configuredNetwork.networkId == networkId) {
+                return configuredNetwork;
             }
         }
         return null;
-    }
-
-    /**
-     * 关闭/启用 WiFi
-     */
-    public static void setWifiEnabled(Context context, boolean enabled) {
-        getWifiManager(context).setWifiEnabled(enabled);
     }
 
     /**

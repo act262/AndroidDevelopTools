@@ -22,7 +22,7 @@
         <activity
             android:name=".ui.MainActivity"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustPan|stateHidden">
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
