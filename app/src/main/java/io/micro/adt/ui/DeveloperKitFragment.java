@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridLayout;
+import android.widget.LinearLayout;
 
 import java.util.List;
 
@@ -19,13 +19,10 @@ import io.micro.adt.view.DevItemView;
  */
 public class DeveloperKitFragment extends BaseFragment {
 
-    private GridLayout mGridLayout;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_developer_kit, container, false);
-        mGridLayout = findView(R.id.gridLayout);
         View more = findView(R.id.btn_more);
 
         more.setOnClickListener(new View.OnClickListener() {
@@ -43,8 +40,26 @@ public class DeveloperKitFragment extends BaseFragment {
 
         List<DevItemView> itemViews = DevOptFactory.createAll(getActivity());
 
-        for (DevItemView itemView : itemViews) {
-            mGridLayout.addView(itemView);
+        // 分为4列排布
+        final int COLUMN = 4;
+        // 可以展示的行数
+        final int ROW = (itemViews.size() - 1) / COLUMN + 1;
+
+        LinearLayout container = (LinearLayout) this.mRootView;
+
+        for (int row = 0; row < ROW; row++) {
+            LinearLayout rowLayout = new LinearLayout(getActivity());
+            rowLayout.setWeightSum(COLUMN);
+
+            for (int column = 0; column < COLUMN; column++) {
+                int index = COLUMN * row + column;
+                if (index >= itemViews.size()) {
+                    break;
+                }
+                rowLayout.addView(itemViews.get(index), new LinearLayout.LayoutParams(0, -1, 1));
+            }
+
+            container.addView(rowLayout);
         }
     }
 }

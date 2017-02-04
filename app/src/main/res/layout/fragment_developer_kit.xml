@@ -25,10 +25,4 @@
             tools:ignore="RelativeOverlap,RtlHardcoded"/>
     </RelativeLayout>
 
-    <GridLayout
-        android:id="@+id/gridLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:columnCount="4"/>
-
 </LinearLayout>

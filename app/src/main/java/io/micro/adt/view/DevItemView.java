@@ -2,6 +2,7 @@ package io.micro.adt.view;
 
 import android.content.Context;
 import android.graphics.ColorFilter;
+import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -24,6 +25,11 @@ public class DevItemView extends FrameLayout implements View.OnClickListener {
     private static final ColorFilter ENABLED_FILTER = ColorUtil.getEnabledFilter1();
     private static final ColorFilter DISABLED_FILTER = ColorUtil.getDisabledFilter1();
 
+    public DevItemView(Context context, AttributeSet attrs) {
+//        super(context, attrs);
+        this(context);
+    }
+
     public DevItemView(Context context) {
         this(context, new DevItem());
     }
@@ -41,9 +47,10 @@ public class DevItemView extends FrameLayout implements View.OnClickListener {
     private void set(DevItem item) {
         this.item = item;
         boolean activated = item.isActivated(getContext());
-
-        icon.setImageResource(item.icon);
-        text.setText(item.desc);
+        int iconRes = item.icon == 0 ? R.mipmap.ic_launcher : item.icon;
+        icon.setImageResource(iconRes);
+        int descRes = item.desc == 0 ? R.string.app_name : item.desc;
+        text.setText(descRes);
         this.setActivated(activated);
 
         // 这里控制不同状态下的图标颜色变化
