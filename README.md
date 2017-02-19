@@ -1,11 +1,13 @@
 Android开发助手README
 ===
+### 基本功能如下图所示：
+![screenshot](./screenshots/app_home.png) 
+
+---
 
 本应用设置方式参考
 `系统设置模块`[Settings](https://android.googlesource.com/platform/packages/apps/Settings/)模块
 `Framework`[cmds](https://android.googlesource.com/platform/frameworks/base/)模块
-
----
 
 大部分功能不能直接使用，可用反射方式设置系统属性，部分功能需要root权限才能正常使用。
 
