@@ -29,6 +29,9 @@ import io.android.shell.cmd.SystemPropertiesCmds;
 public class DeveloperKit {
 
     private static final String FALSE = "false";
+    private static final String ENABLED = "1";
+    private static final String DISABLED = "0";
+
     /* copy from View.DEBUG_LAYOUT_PROPERTY */
     private static final String DEBUG_LAYOUT_PROPERTY = "debug.layout";
     /* copy from ThreadedRenderer.DEBUG_OVERDRAW_PROPERTY */
@@ -40,6 +43,9 @@ public class DeveloperKit {
 
     /* copy from StrictMode.VISUAL_PROPERTY */
     private static final String STRICT_MODE_VISUAL_PROPERTY = "persist.sys.strictmode.visual";
+
+    /* copy from Settings.System.POINTER_LOCATION */
+    private static final String POINTER_LOCATION = "pointer_location";
 
     private DeveloperKit() {
     }
@@ -61,7 +67,7 @@ public class DeveloperKit {
     public static void setAdbEnabled(boolean enabled) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             try {
-                SettingsCmds.putStringGlobal(Settings.Global.ADB_ENABLED, enabled ? "1" : "0");
+                SettingsCmds.putStringGlobal(Settings.Global.ADB_ENABLED, enabled ? ENABLED : DISABLED);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -85,7 +91,7 @@ public class DeveloperKit {
     public static void keepScreenOn(boolean enabled) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             try {
-                SettingsCmds.putStringGlobal(Settings.Global.STAY_ON_WHILE_PLUGGED_IN, enabled ? (BatteryManager.BATTERY_PLUGGED_AC | BatteryManager.BATTERY_PLUGGED_USB) + "" : "0");
+                SettingsCmds.putStringGlobal(Settings.Global.STAY_ON_WHILE_PLUGGED_IN, enabled ? (BatteryManager.BATTERY_PLUGGED_AC | BatteryManager.BATTERY_PLUGGED_USB) + "" : DISABLED);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -168,7 +174,7 @@ public class DeveloperKit {
      * 是否开启严格模式
      */
     public static boolean isStrictMode() {
-        return "1".equals(SystemProperties.get(STRICT_MODE_VISUAL_PROPERTY));
+        return ENABLED.equals(SystemProperties.get(STRICT_MODE_VISUAL_PROPERTY));
     }
 
     /**
@@ -180,7 +186,7 @@ public class DeveloperKit {
             Method asInterface = clz.getMethod("asInterface", IBinder.class);
             Object windowManager = asInterface.invoke(null, ServiceManager.getService("window"));
             Method method = clz.getMethod("setStrictModeVisualIndicatorPreference", String.class);
-            method.invoke(windowManager, enabled ? "1" : "");
+            method.invoke(windowManager, enabled ? ENABLED : "");
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
@@ -227,8 +233,32 @@ public class DeveloperKit {
 //        }
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                SettingsCmds.putStringGlobal(Settings.Global.ALWAYS_FINISH_ACTIVITIES, enabled ? "1" : "0");
+                SettingsCmds.putStringGlobal(Settings.Global.ALWAYS_FINISH_ACTIVITIES, enabled ? ENABLED : DISABLED);
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 是否开启指针位置
+     */
+    public static boolean isPointerLocation(Context context) {
+        int enabled = 0;
+        try {
+            enabled = Settings.System.getInt(context.getContentResolver(), POINTER_LOCATION);
+        } catch (Settings.SettingNotFoundException e) {
+            e.printStackTrace();
+        }
+        return enabled != 0;
+    }
+
+    /**
+     * 开启指针位置
+     */
+    public static void setPointerLocation(boolean enabled) {
+        try {
+            SettingsCmds.putStringSystem(POINTER_LOCATION, enabled ? ENABLED : DISABLED);
         } catch (IOException e) {
             e.printStackTrace();
         }

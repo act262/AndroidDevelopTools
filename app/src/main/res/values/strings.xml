@@ -14,6 +14,7 @@
     <string name="debug_gpu_profile">GPU呈现模式分析</string>
     <string name="debug_stric_mode">启用严格模式</string>
     <string name="debug_destroy_activity">不保留活动</string>
+    <string name="debug_pointer_location">指针位置</string>
 
     <!-- network -->
     <string name="setting_network">网络设置</string>

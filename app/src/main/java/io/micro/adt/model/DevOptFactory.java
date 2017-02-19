@@ -30,6 +30,7 @@ public class DevOptFactory {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             list.add(new DevItemView(context, new DebugDestroyActivity()));
         }
+        list.add(new DevItemView(context, new DebugPointerLocation()));
         return list;
     }
 
@@ -156,5 +157,23 @@ public class DevOptFactory {
             // 改变状态后需要一定时间响应
             SystemClock.sleep(2000);
         }
+    }
+
+    private static class DebugPointerLocation extends DevItem {
+        DebugPointerLocation() {
+            icon = R.drawable.ic_developer_pointer_location;
+            desc = R.string.debug_pointer_location;
+        }
+
+        @Override
+        public boolean isActivated(Context context) {
+            return DeveloperKit.isPointerLocation(context);
+        }
+
+        @Override
+        public void setActivated(Context context, boolean activated) {
+            DeveloperKit.setPointerLocation(activated);
+        }
+
     }
 }

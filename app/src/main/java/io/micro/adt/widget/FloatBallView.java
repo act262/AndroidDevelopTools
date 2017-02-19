@@ -44,19 +44,20 @@ public class FloatBallView extends View {
         init();
     }
 
+    private void init() {
+        mPaint = new Paint();
+        mPaint.setColor(ResourcesCompat.getColor(getResources(), R.color.colorAccent, null));
+        mPaint.setStyle(Paint.Style.FILL);
+        mPaint.setAntiAlias(true);
+
+        touchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, WIDTH, getResources().getDisplayMetrics());
         //noinspection SuspiciousNameCombination
         setMeasuredDimension(width, width);
-    }
-
-    private void init() {
-        touchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
-        mPaint = new Paint();
-        mPaint.setColor(ResourcesCompat.getColor(getResources(), R.color.colorAccent, null));
-        mPaint.setStyle(Paint.Style.FILL);
-        mPaint.setAntiAlias(true);
     }
 
     @Override

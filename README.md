@@ -1,7 +1,7 @@
 Android开发助手
 ===
 
-
+所有图标资源来自(IconFont)[http://www.iconfont.cn/plus/home/index]
 采用反射方式设置系统属性
 
 
