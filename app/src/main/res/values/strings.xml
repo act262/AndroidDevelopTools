@@ -15,6 +15,7 @@
     <string name="debug_stric_mode">启用严格模式</string>
     <string name="debug_destroy_activity">不保留活动</string>
     <string name="debug_pointer_location">指针位置</string>
+    <string name="debug_show_touches">触摸视觉反馈</string>
 
     <!-- network -->
     <string name="setting_network">网络设置</string>

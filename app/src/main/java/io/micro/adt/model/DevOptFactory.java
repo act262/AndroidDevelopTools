@@ -31,6 +31,7 @@ public class DevOptFactory {
             list.add(new DevItemView(context, new DebugDestroyActivity()));
         }
         list.add(new DevItemView(context, new DebugPointerLocation()));
+        list.add(new DevItemView(context, new DebugShowTouches()));
         return list;
     }
 
@@ -174,6 +175,22 @@ public class DevOptFactory {
         public void setActivated(Context context, boolean activated) {
             DeveloperKit.setPointerLocation(activated);
         }
+    }
 
+    private static class DebugShowTouches extends DevItem {
+        DebugShowTouches() {
+            icon = R.drawable.ic_developer_touches;
+            desc = R.string.debug_show_touches;
+        }
+
+        @Override
+        public boolean isActivated(Context context) {
+            return DeveloperKit.isShowTouches(context);
+        }
+
+        @Override
+        public void setActivated(Context context, boolean activated) {
+            DeveloperKit.setShowTouches(activated);
+        }
     }
 }

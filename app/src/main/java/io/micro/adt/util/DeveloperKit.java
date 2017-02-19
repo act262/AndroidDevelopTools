@@ -46,6 +46,8 @@ public class DeveloperKit {
 
     /* copy from Settings.System.POINTER_LOCATION */
     private static final String POINTER_LOCATION = "pointer_location";
+    /* copy from Settings.System.SHOW_TOUCHES */
+    public static final String SHOW_TOUCHES = "show_touches";
 
     private DeveloperKit() {
     }
@@ -259,6 +261,30 @@ public class DeveloperKit {
     public static void setPointerLocation(boolean enabled) {
         try {
             SettingsCmds.putStringSystem(POINTER_LOCATION, enabled ? ENABLED : DISABLED);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 是否显示点击操作反馈
+     */
+    public static boolean isShowTouches(Context context) {
+        int enabled = 0;
+        try {
+            enabled = Settings.System.getInt(context.getContentResolver(), SHOW_TOUCHES);
+        } catch (Settings.SettingNotFoundException e) {
+            e.printStackTrace();
+        }
+        return enabled != 0;
+    }
+
+    /**
+     * 显示点击操作反馈
+     */
+    public static void setShowTouches(boolean enabled) {
+        try {
+            SettingsCmds.putStringSystem(SHOW_TOUCHES, enabled ? ENABLED : DISABLED);
         } catch (IOException e) {
             e.printStackTrace();
         }
