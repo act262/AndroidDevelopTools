@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="io.micro.adt.ui.MainActivity">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/activity_main"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="io.micro.adt.ui.MainActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolBar"
@@ -23,7 +23,14 @@
             android:checked="true"
             android:text="@string/float_ball"
             android:textOff="@string/float_ball_off"
-            android:textOn="@string/float_ball_on" />
+            android:textOn="@string/float_ball_on"/>
+
+        <Button
+            android:id="@+id/btn_terminal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Terminal"/>
+
     </android.support.v7.widget.Toolbar>
 
     <fragment
@@ -31,19 +38,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:tag="fragment_developer_kit"
-        tools:layout="@layout/fragment_developer_kit" />
+        tools:layout="@layout/fragment_developer_kit"/>
 
     <fragment
         class="io.micro.adt.ui.NetworkKitFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:tag="fragment_network_kit"
-        tools:layout="@layout/fragment_network_kit" />
+        tools:layout="@layout/fragment_network_kit"/>
 
     <fragment
         class="io.micro.adt.ui.AppKitFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:tag="fragment_app_kit"
-        tools:layout="@layout/fragment_app_kit" />
+        tools:layout="@layout/fragment_app_kit"/>
 </LinearLayout>

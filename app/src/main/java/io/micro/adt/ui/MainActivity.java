@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -31,6 +32,12 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
         Switch floatBallSwitch = (Switch) findViewById(R.id.switchFloatBall);
         floatBallSwitch.setOnCheckedChangeListener(this);
+        findViewById(R.id.btn_terminal).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TerminalFragment.newInstance().show(getFragmentManager(), "terminal");
+            }
+        });
 
         boolean checked = preferences.getBoolean(FloatBallService.KEY_FLOAT_BALL_SWITCH, false);
         floatBallSwitch.setChecked(checked);
