@@ -1,5 +1,6 @@
 package io.micro.adt.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -8,12 +9,14 @@ import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.ToggleButton;
 
 import io.micro.adt.R;
+import io.micro.adt.ui.hosts.HostsActivity;
 import io.micro.adt.util.DFormatter;
 import io.micro.adt.util.NetworkKit;
 import io.micro.adt.util.text.SimpleTextWatcher;
@@ -98,6 +101,14 @@ public class NetworkKitFragment extends BaseFragment implements CompoundButton.O
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 toggleWifi(isChecked);
+            }
+        });
+
+        Button hostsBtn = findView(R.id.btn_hosts);
+        hostsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), HostsActivity.class));
             }
         });
         return mRootView;

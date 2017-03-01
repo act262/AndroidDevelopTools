@@ -125,7 +125,7 @@ public class DevOptFactory {
     private static class DebugStrict extends DevItem {
         DebugStrict() {
             icon = R.drawable.ic_developer_strict;
-            desc = R.string.debug_stric_mode;
+            desc = R.string.debug_strict_mode;
         }
 
         @Override

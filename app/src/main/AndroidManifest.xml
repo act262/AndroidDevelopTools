@@ -4,6 +4,8 @@
     <!-- 系统签名的app -->
     <!-- android:sharedUserId="android.uid.system" -->
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
     <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
@@ -29,6 +31,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <!-- Hosts配置管理 -->
+        <activity android:name=".ui.hosts.HostsActivity"/>
 
         <service android:name=".service.FloatBallService"/>
 

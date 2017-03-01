@@ -7,4 +7,9 @@
     <!-- 这里的Disabled颜色是Enabled颜色+7F7F7F后的 -->
     <color name="colorEnabled">#515151</color>
     <color name="colorDisabled">#D0D0D0</color>
+
+
+    <color name="pressed">#e9e4e4</color>
+    <color name="selected">#e9e4e4</color>
+    <color name="normal">#f0f0f0</color>
 </resources>
