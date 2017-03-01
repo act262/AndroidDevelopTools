@@ -3,10 +3,13 @@ package io.micro.adt.util;
 import android.content.Context;
 import android.os.Environment;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 
@@ -18,6 +21,26 @@ import io.android.shell.cmd.CmdSet;
  * @author act262@gmail.com
  */
 public class HostsUtil {
+
+    public static String readSystemHosts() {
+        StringBuilder sb = new StringBuilder();
+        File file = new File("/system/etc/hosts");
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+            String line;
+            // print execute result
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+                sb.append(line);
+                sb.append("\n");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return sb.toString();
+    }
 
     /**
      * 写入Host文件,

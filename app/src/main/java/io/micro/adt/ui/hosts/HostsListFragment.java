@@ -44,6 +44,11 @@ public class HostsListFragment extends Fragment implements View.OnClickListener 
         mDataSet = new ArrayList<>(2);
 
         // TODO: 2017/3/1 mock data
+        HostsListItem systemHosts = new HostsListItem();
+        systemHosts.title = "system host";
+        systemHosts.content = new ArrayList<>();
+        mDataSet.add(systemHosts);
+
         for (int i = 0; i < 10; i++) {
             HostsListItem item = new HostsListItem();
             item.title = "title_" + i;
@@ -70,7 +75,6 @@ public class HostsListFragment extends Fragment implements View.OnClickListener 
         mAdapter = new HostsAdapter();
         recyclerView.setAdapter(mAdapter);
 
-        inflate.findViewById(R.id.tv_system).setOnClickListener(this);
         inflate.findViewById(R.id.btn_add).setOnClickListener(this);
         return inflate;
     }
@@ -78,8 +82,6 @@ public class HostsListFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_system:
-                break;
             case R.id.btn_add:
                 addNewItem();
                 break;
@@ -93,9 +95,26 @@ public class HostsListFragment extends Fragment implements View.OnClickListener 
 
     private class HostsAdapter extends RecyclerView.Adapter {
 
+        private final int TYPE_SYSTEM = 0x01;
+        private final int TYPE_CUSTOM = 0x02;
+
+        @Override
+        public int getItemCount() {
+            return mDataSet.size();
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return position == 0 ? TYPE_SYSTEM : TYPE_CUSTOM;
+        }
+
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new HostsViewHolder(parent.getContext());
+            if (viewType == TYPE_SYSTEM) {
+                return new SystemHostsViewHolder(parent.getContext());
+            } else {
+                return new CustomHostsViewHolder(parent.getContext());
+            }
         }
 
         @Override
@@ -109,23 +128,35 @@ public class HostsListFragment extends Fragment implements View.OnClickListener 
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            ((HostsViewHolder) holder).onBindViewHolder(mDataSet.get(position));
-            holder.itemView.setTag(position);
-        }
+            int type = getItemViewType(position);
 
-        @Override
-        public int getItemCount() {
-            return mDataSet.size();
+            if (type == TYPE_CUSTOM) {
+                ((CustomHostsViewHolder) holder).onBindViewHolder(mDataSet.get(position));
+            }
+            holder.itemView.setTag(position);
         }
     }
 
-    private class HostsViewHolder extends RecyclerView.ViewHolder {
+    private class SystemHostsViewHolder extends RecyclerView.ViewHolder {
+
+        SystemHostsViewHolder(Context context) {
+            super(LayoutInflater.from(context).inflate(R.layout.item_hosts_list_system, null));
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickItem(itemView);
+                }
+            });
+        }
+    }
+
+    private class CustomHostsViewHolder extends RecyclerView.ViewHolder {
 
         TextView title;
         Switch aSwitch;
 
         @SuppressLint("InflateParams")
-        HostsViewHolder(Context context) {
+        CustomHostsViewHolder(Context context) {
             super(LayoutInflater.from(context).inflate(R.layout.item_hosts_list, null));
 
             title = (TextView) itemView.findViewById(R.id.tv_title);

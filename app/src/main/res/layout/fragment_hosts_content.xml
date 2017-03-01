@@ -9,8 +9,8 @@
         android:id="@+id/et_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="top|left"
-        android:inputType="text"
+        android:gravity="top|start"
+        android:inputType="textMultiLine"
         android:textIsSelectable="true"/>
 
 </LinearLayout>
