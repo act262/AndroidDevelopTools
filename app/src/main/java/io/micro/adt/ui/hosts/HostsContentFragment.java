@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import io.micro.adt.R;
-import io.micro.adt.util.HostsUtil;
+import io.micro.adt.model.HostsListItem;
 
 /**
  * Hosts Content
@@ -33,8 +33,9 @@ public class HostsContentFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+    }
 
-        String hosts = HostsUtil.readSystemHosts();
-        contentText.setText(hosts);
+    public void setHosts(HostsListItem item) {
+        contentText.setText(item.content);
     }
 }

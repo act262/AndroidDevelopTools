@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.micro.adt.R;
-import io.micro.adt.model.HostsInfo;
 import io.micro.adt.model.HostsListItem;
+import io.micro.adt.util.HostsUtil;
 
 /**
  * Hosts List
@@ -37,6 +37,7 @@ public class HostsListFragment extends Fragment implements View.OnClickListener 
 
     // Current selected item position
     private int selectedIndex = 0;
+    private HostsListItem systemHosts;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,22 +45,15 @@ public class HostsListFragment extends Fragment implements View.OnClickListener 
         mDataSet = new ArrayList<>(2);
 
         // TODO: 2017/3/1 mock data
-        HostsListItem systemHosts = new HostsListItem();
+        systemHosts = new HostsListItem();
         systemHosts.title = "system host";
-        systemHosts.content = new ArrayList<>();
-        mDataSet.add(systemHosts);
+        systemHosts.content = HostsUtil.readSystemHosts();
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 20; i++) {
             HostsListItem item = new HostsListItem();
-            item.title = "title_" + i;
+            item.title = "host_title_" + i;
             item.checked = i % 2 == 0;
-            item.content = new ArrayList<>();
-            for (int j = 0; j < 5; j++) {
-                HostsInfo hostsInfo = new HostsInfo();
-                hostsInfo.domain = "www.baidu.com";
-                hostsInfo.ip = "127.0.0.1";
-                item.content.add(hostsInfo);
-            }
+            item.content = "127.0.0.1 www.google.com\n127.0.0.1 localhost\n";
             mDataSet.add(item);
         }
     }
@@ -75,6 +69,7 @@ public class HostsListFragment extends Fragment implements View.OnClickListener 
         mAdapter = new HostsAdapter();
         recyclerView.setAdapter(mAdapter);
 
+        inflate.findViewById(R.id.tv_system).setOnClickListener(this);
         inflate.findViewById(R.id.btn_add).setOnClickListener(this);
         return inflate;
     }
@@ -82,6 +77,9 @@ public class HostsListFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.tv_system:
+                switchItem(systemHosts);
+                break;
             case R.id.btn_add:
                 addNewItem();
                 break;
@@ -95,26 +93,14 @@ public class HostsListFragment extends Fragment implements View.OnClickListener 
 
     private class HostsAdapter extends RecyclerView.Adapter {
 
-        private final int TYPE_SYSTEM = 0x01;
-        private final int TYPE_CUSTOM = 0x02;
-
         @Override
         public int getItemCount() {
             return mDataSet.size();
         }
 
         @Override
-        public int getItemViewType(int position) {
-            return position == 0 ? TYPE_SYSTEM : TYPE_CUSTOM;
-        }
-
-        @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            if (viewType == TYPE_SYSTEM) {
-                return new SystemHostsViewHolder(parent.getContext());
-            } else {
-                return new CustomHostsViewHolder(parent.getContext());
-            }
+            return new CustomHostsViewHolder(parent.getContext());
         }
 
         @Override
@@ -128,27 +114,11 @@ public class HostsListFragment extends Fragment implements View.OnClickListener 
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            int type = getItemViewType(position);
-
-            if (type == TYPE_CUSTOM) {
-                ((CustomHostsViewHolder) holder).onBindViewHolder(mDataSet.get(position));
-            }
+            ((CustomHostsViewHolder) holder).onBindViewHolder(mDataSet.get(position));
             holder.itemView.setTag(position);
         }
     }
 
-    private class SystemHostsViewHolder extends RecyclerView.ViewHolder {
-
-        SystemHostsViewHolder(Context context) {
-            super(LayoutInflater.from(context).inflate(R.layout.item_hosts_list_system, null));
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onClickItem(itemView);
-                }
-            });
-        }
-    }
 
     private class CustomHostsViewHolder extends RecyclerView.ViewHolder {
 
@@ -216,6 +186,15 @@ public class HostsListFragment extends Fragment implements View.OnClickListener 
         // Update selected item state
         selectedIndex = position;
         mAdapter.notifyItemRangeChanged(0, mAdapter.getItemCount(), true);
+
+        switchItem(mDataSet.get(position));
+    }
+
+    private void switchItem(HostsListItem item) {
+        HostsContentFragment contentFragment = (HostsContentFragment) getFragmentManager().findFragmentByTag("content");
+        if (contentFragment != null) {
+            contentFragment.setHosts(item);
+        }
     }
 
     private void deleteItem(int position) {
