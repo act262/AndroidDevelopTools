@@ -2,8 +2,12 @@ package io.micro.adt.ui.hosts;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.database.ContentObserver;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.micro.adt.R;
+import io.micro.adt.db.DataProvider;
 import io.micro.adt.model.HostsListItem;
 import io.micro.adt.util.HostsUtil;
 
@@ -56,6 +61,19 @@ public class HostsListFragment extends Fragment implements View.OnClickListener 
             item.content = "127.0.0.1 www.google.com\n127.0.0.1 localhost\n";
             mDataSet.add(item);
         }
+
+        ContentResolver contentResolver = getActivity().getContentResolver();
+        contentResolver.registerContentObserver(DataProvider.HOSTS, true, new ContentObserver(new Handler()) {
+            @Override
+            public void onChange(boolean selfChange) {
+                System.out.println("HostsListFragment.onChange");
+            }
+        });
+        Cursor cursor = contentResolver.query(DataProvider.HOSTS, null, null, null, null);
+        while (cursor.moveToNext()) {
+
+        }
+        cursor.close();
     }
 
     @Nullable
@@ -91,6 +109,13 @@ public class HostsListFragment extends Fragment implements View.OnClickListener 
         NewHostsItemDialog.newInstance().show(getFragmentManager(), "newItem");
     }
 
+    private void onNewItemInsert() {
+        HostsListItem item = new HostsListItem();
+//        item.title = key;
+        mDataSet.add(0, item);
+        mAdapter.notifyDataSetChanged();
+    }
+
     private class HostsAdapter extends RecyclerView.Adapter {
 
         @Override
@@ -118,7 +143,6 @@ public class HostsListFragment extends Fragment implements View.OnClickListener 
             holder.itemView.setTag(position);
         }
     }
-
 
     private class CustomHostsViewHolder extends RecyclerView.ViewHolder {
 

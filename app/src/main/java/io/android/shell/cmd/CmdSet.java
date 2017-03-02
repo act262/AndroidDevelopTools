@@ -25,15 +25,4 @@ public class CmdSet {
         executor.exec("am start " + pkg + " -a android.intent.action.MAIN -c android.intent.category.LAUNCHER ");
     }
 
-    public static void writeHosts(String newHostPath) {
-        try {
-//            CmdSet.suExecutor.exec("chmod 666 /system/etc/hosts");
-            // first backup old host file
-            CmdSet.suExecutor.exec("mv /system/etc/hosts /system/etc/hosts.bak");
-            // then copy new host file to replace it
-            CmdSet.suExecutor.exec("cp " + newHostPath + " /system/etc/hosts");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

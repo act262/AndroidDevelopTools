@@ -1,6 +1,8 @@
 package io.micro.adt.ui.hosts;
 
 import android.app.DialogFragment;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -11,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import io.micro.adt.R;
+import io.micro.adt.db.DataProvider;
 
 /**
  * 添加新Item弹窗
@@ -58,6 +61,11 @@ public class NewHostsItemDialog extends DialogFragment implements View.OnClickLi
 
         //TODO: 重复方案名提示
 
-        // TODO: 2017/3/1 添加成功
+        ContentResolver contentResolver = getActivity().getContentResolver();
+        ContentValues contentValues = new ContentValues(1);
+        contentValues.put("title", name);
+        contentResolver.insert(DataProvider.HOSTS, contentValues);
+
+        dismiss();
     }
 }

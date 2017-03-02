@@ -24,8 +24,10 @@ public class HostsUtil {
 
     public static String readSystemHosts() {
         StringBuilder sb = new StringBuilder();
-        File file = new File("/system/etc/hosts");
+        File file = new File("/system/etc/sysHosts");
         try {
+            CmdSet.suExecutor.exec("chmod a+r /system/etc/sysHosts");
+
             BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
             String line;
             // print execute result
@@ -82,6 +84,19 @@ public class HostsUtil {
     }
 
     public static void handleHosts(String newHostsFile) {
-        CmdSet.writeHosts(newHostsFile);
+        writeHosts(newHostsFile);
+    }
+
+
+    public static void writeHosts(String newHostPath) {
+        try {
+//            CmdSet.suExecutor.exec("chmod 666 /system/etc/hosts");
+            // first backup old host file
+            CmdSet.suExecutor.exec("mv /system/etc/hosts /system/etc/hosts.bak");
+            // then copy new host file to replace it
+            CmdSet.suExecutor.exec("cp " + newHostPath + " /system/etc/hosts");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -37,6 +37,12 @@
 
         <service android:name=".service.FloatBallService"/>
 
+        <!-- ContentProvider -->
+        <provider
+            android:name=".db.DataProvider"
+            android:authorities="io.micro.adt"
+            android:exported="false"/>
+
     </application>
 
 </manifest>
