@@ -74,14 +74,19 @@ public class DataProvider extends ContentProvider {
         return cursor;
     }
 
+    @Override
+    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+        int row = 0;
+        if (uriMatcher.match(uri) == CODE_HOSTS) {
+            SQLiteDatabase database = dbHelper.getWritableDatabase();
+            row = database.update("hosts", values, selection, selectionArgs);
+        }
+        return row;
+    }
+
     @Nullable
     @Override
     public String getType(Uri uri) {
         return null;
-    }
-
-    @Override
-    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        return 0;
     }
 }

@@ -70,10 +70,11 @@ public class HostsListFragment extends Fragment implements View.OnClickListener 
             }
         });
         Cursor cursor = contentResolver.query(DataProvider.HOSTS, null, null, null, null);
-        while (cursor.moveToNext()) {
+        while (cursor != null && cursor.moveToNext()) {
 
         }
         cursor.close();
+
     }
 
     @Nullable

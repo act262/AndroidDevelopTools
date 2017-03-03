@@ -3,6 +3,7 @@ package io.micro.adt.ui.hosts;
 import android.app.DialogFragment;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -59,9 +60,16 @@ public class NewHostsItemDialog extends DialogFragment implements View.OnClickLi
             Toast.makeText(getActivity(), "不能为空", Toast.LENGTH_SHORT).show();
         }
 
-        //TODO: 重复方案名提示
-
         ContentResolver contentResolver = getActivity().getContentResolver();
+
+        // 重复方案名提示
+        Cursor cursor = contentResolver.query(DataProvider.HOSTS, null, "title=?", new String[]{name}, null);
+        if (cursor != null && cursor.getCount() > 0) {
+            Toast.makeText(getActivity(), "已经存在方案名", Toast.LENGTH_SHORT).show();
+            cursor.close();
+            return;
+        }
+
         ContentValues contentValues = new ContentValues(1);
         contentValues.put("title", name);
         contentResolver.insert(DataProvider.HOSTS, contentValues);
