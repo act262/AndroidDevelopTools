@@ -8,14 +8,17 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
+import android.support.v7.widget.SwitchCompat;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.CompoundButton;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import io.android.shell.RootHelper;
 import io.micro.adt.R;
 import io.micro.adt.service.FloatBallService;
+import io.micro.adt.util.DeveloperKit;
 
 public class MainActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 
@@ -29,15 +32,11 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolBar);
+        setSupportActionBar(toolbar);
 
-        Switch floatBallSwitch = (Switch) findViewById(R.id.switchFloatBall);
+        SwitchCompat floatBallSwitch = (SwitchCompat) findViewById(R.id.switchFloatBall);
         floatBallSwitch.setOnCheckedChangeListener(this);
-        findViewById(R.id.btn_terminal).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TerminalFragment.newInstance().show(getFragmentManager(), "terminal");
-            }
-        });
 
         boolean checked = preferences.getBoolean(FloatBallService.KEY_FLOAT_BALL_SWITCH, false);
         floatBallSwitch.setChecked(checked);
@@ -53,6 +52,29 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         if (finish) {
             finish();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_settings:
+                DeveloperKit.openDevelopmentSettings(getApplicationContext());
+                break;
+
+            case R.id.menu_terminal:
+                TerminalFragment.newInstance().show(getFragmentManager(), "terminal");
+                break;
+
+            default:
+                return false;
+        }
+        return true;
     }
 
     @Override

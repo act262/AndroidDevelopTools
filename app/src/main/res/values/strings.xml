@@ -1,8 +1,7 @@
 <resources>
     <string name="app_name">Android开发助手</string>
-    <string name="float_ball">开启悬浮球</string>
-    <string name="float_ball_on">开启悬浮球</string>
-    <string name="float_ball_off">关闭悬浮球</string>
+    <string name="float_ball">悬浮球</string>
+    <string name="terminal">terminal</string>
 
     <!-- developer -->
     <string name="developer_options">开发者选项</string>
