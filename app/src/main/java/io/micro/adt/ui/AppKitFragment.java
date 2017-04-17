@@ -2,14 +2,17 @@ package io.micro.adt.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Editable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
+import android.widget.EditText;
 
 import io.micro.adt.R;
 import io.micro.adt.util.AppUtil;
+import io.micro.adt.util.PackageUtil;
+import io.micro.adt.util.text.SimpleTextWatcher;
 
 /**
  * App 相关功能页面
@@ -18,29 +21,56 @@ import io.micro.adt.util.AppUtil;
  */
 public class AppKitFragment extends BaseFragment {
 
+    private static final String PREF_TARGET_PACKAGE_NAME = "target_package_name";
+
+    private EditText pkgEditText;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_app_kit, null);
 
-
-        final CheckBox restartCheckBox = findView(R.id.cb_restart);
-        final CheckBox clearCheckBox = findView(R.id.cb_clear);
-
-        Button restartBtn = findView(R.id.btn_reset);
-        restartBtn.setOnClickListener(new View.OnClickListener() {
+        pkgEditText = findView(R.id.et_pkg);
+        pkgEditText.addTextChangedListener(new SimpleTextWatcher() {
             @Override
-            public void onClick(View v) {
-                if (clearCheckBox.isChecked()) {
-                    // TODO: 2017/1/23 Not yet implement
-                    AppUtil.clearAppData("");
-                }
-                if (restartCheckBox.isChecked()) {
-                    // TODO: 2017/1/23 Not yet implement
-                    AppUtil.restartApp("");
-                }
+            public void afterTextChanged(Editable s) {
+                String pkgName = pkgEditText.getText().toString();
+                save(PREF_TARGET_PACKAGE_NAME, pkgName);
             }
         });
+
+        findView(R.id.btn_clear).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String pkg = pkgEditText.getText().toString();
+                AppUtil.clearAppData(pkg);
+            }
+        });
+        findView(R.id.btn_restart).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String pkg = pkgEditText.getText().toString();
+                PackageUtil.startPkg(getActivity(), pkg);
+            }
+        });
+        findView(R.id.btn_reset).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String pkg = pkgEditText.getText().toString();
+                AppUtil.clearAppData(pkg);
+                PackageUtil.startPkg(getActivity(), pkg);
+            }
+        });
+
         return mRootView;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        String pkgName = get(PREF_TARGET_PACKAGE_NAME);
+        if (!TextUtils.isEmpty(pkgName)) {
+            pkgEditText.setText(pkgName);
+        }
     }
 }

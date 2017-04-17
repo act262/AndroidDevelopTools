@@ -17,12 +17,22 @@ public class CmdSet {
 
     public static ICmdExecutor suExecutor = new SuCmdExecutor();
 
-    public static void clearAppData(String pkg) throws IOException {
-        executor.exec("pm clear " + pkg);
+    /**
+     * 以普通权限执行命令
+     *
+     * @throws IOException
+     */
+    public static void exec(String... cmd) throws IOException {
+        executor.exec(cmd);
     }
 
-    public static void restartApp(String pkg) throws IOException {
-        executor.exec("am start " + pkg + " -a android.intent.action.MAIN -c android.intent.category.LAUNCHER ");
+    /**
+     * 以root权限执行命令
+     *
+     * @throws IOException
+     */
+    public static void execSu(String... cmd) throws IOException {
+        suExecutor.exec(cmd);
     }
 
 }

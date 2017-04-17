@@ -54,6 +54,10 @@ public class AppUtil {
         return (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
     }
 
+    /**
+     * 没有权限
+     * android.permission.CLEAR_APP_USER_DATA
+     */
     public static void clearAppData(Context context, String pkg) {
         ActivityManager activityManager = getActivityManager(context);
         try {
@@ -73,19 +77,43 @@ public class AppUtil {
         }
     }
 
+    public static void clearAppData1(Context context, String pkg) {
+        try {
+            Class<?> amNativeCls = Class.forName("android.app.ActivityManagerNative");
+            Method getDefault = amNativeCls.getMethod("getDefault");
+            Object amNative = getDefault.invoke(null);
+            Class<?> observerCls = Class.forName("android.content.pm.IPackageDataObserver");
+            Method clearApplicationUserData = amNativeCls.getMethod("clearApplicationUserData", String.class, observerCls, int.class);
+            // ActivityManagerNative.clearApplicationUserData(pkg,observer,userId)
+            clearApplicationUserData.invoke(amNative, pkg, null, 0);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 使用pm命令清除指定包名的数据，不用权限即可处理
+     */
     public static void clearAppData(String pkg) {
         try {
-            CmdSet.clearAppData(pkg);
+            CmdSet.execSu("pm clear " + pkg);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static void restartApp(String pkg) {
+    public static void restartApp(String pkg, String aty) {
         try {
-            CmdSet.restartApp(pkg);
+            CmdSet.execSu("am start " + pkg + " -a android.intent.action.MAIN -c android.intent.category.LAUNCHER ");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 }

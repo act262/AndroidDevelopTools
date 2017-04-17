@@ -21,8 +21,18 @@ public class BaseFragment extends Fragment {
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
     }
 
-    protected <T> T findView(int resId) {
+    protected <T extends View> T findView(int resId) {
         //noinspection unchecked
         return (T) mRootView.findViewById(resId);
+    }
+
+    protected void save(String key, String value) {
+        preferences.edit()
+                .putString(key, value)
+                .apply();
+    }
+
+    protected String get(String key) {
+        return preferences.getString(key, "");
     }
 }
