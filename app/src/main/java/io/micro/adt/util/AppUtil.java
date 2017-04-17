@@ -11,6 +11,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import io.android.shell.cmd.CmdSet;
+import io.android.shell.cmd.SystemPropertiesCmds;
 
 /**
  * App 相关设置功能
@@ -77,26 +78,6 @@ public class AppUtil {
         }
     }
 
-    public static void clearAppData1(Context context, String pkg) {
-        try {
-            Class<?> amNativeCls = Class.forName("android.app.ActivityManagerNative");
-            Method getDefault = amNativeCls.getMethod("getDefault");
-            Object amNative = getDefault.invoke(null);
-            Class<?> observerCls = Class.forName("android.content.pm.IPackageDataObserver");
-            Method clearApplicationUserData = amNativeCls.getMethod("clearApplicationUserData", String.class, observerCls, int.class);
-            // ActivityManagerNative.clearApplicationUserData(pkg,observer,userId)
-            clearApplicationUserData.invoke(amNative, pkg, null, 0);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
-    }
-
     /**
      * 使用pm命令清除指定包名的数据，不用权限即可处理
      */
@@ -111,6 +92,26 @@ public class AppUtil {
     public static void restartApp(String pkg, String aty) {
         try {
             CmdSet.execSu("am start " + pkg + " -a android.intent.action.MAIN -c android.intent.category.LAUNCHER ");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 是否启用WiFi Adb 调试
+     */
+    public static void wifiAdb(boolean enabled) {
+        try {
+            if (enabled) {
+                // setprop service.adb.tcp.port 5555
+                // stop adbd
+                // start adbd
+                SystemPropertiesCmds.set("service.adb.tcp.port", "5555");
+                CmdSet.execSu("stop adbd");
+                CmdSet.execSu("start adbd");
+            } else {
+                CmdSet.execSu("stop adbd");
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

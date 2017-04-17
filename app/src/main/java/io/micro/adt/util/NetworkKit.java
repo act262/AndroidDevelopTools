@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ProxyInfo;
 import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.provider.Settings;
@@ -23,6 +24,29 @@ public class NetworkKit {
 
     private static WifiManager getWifiManager(Context context) {
         return (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+    }
+
+    /**
+     * 获取当前WiFi的IP地址
+     */
+    public static String getIp(Context context) {
+        WifiManager wifiManager = getWifiManager(context);
+        if (wifiManager.isWifiEnabled()) {
+            WifiInfo connectionInfo = wifiManager.getConnectionInfo();
+            int ipAddress = connectionInfo.getIpAddress();
+            return int2Ip(ipAddress);
+        }
+        return "";
+    }
+
+    private static String int2Ip(int ipAddress) {
+        return (ipAddress & 0xFF) +
+                "." +
+                ((ipAddress >> 8) & 0xFF) +
+                "." +
+                ((ipAddress >> 16) & 0xFF) +
+                "." +
+                (ipAddress >> 24 & 0xFF);
     }
 
     /**
