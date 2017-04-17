@@ -107,11 +107,12 @@ public class AppUtil {
                 // stop adbd
                 // start adbd
                 SystemPropertiesCmds.set("service.adb.tcp.port", "5555");
-                CmdSet.execSu("stop adbd");
-                CmdSet.execSu("start adbd");
             } else {
-                CmdSet.execSu("stop adbd");
+                SystemPropertiesCmds.set("service.adb.tcp.port", "-1");
             }
+
+            CmdSet.execSu("stop adbd");
+            CmdSet.execSu("start adbd");
         } catch (IOException e) {
             e.printStackTrace();
         }
