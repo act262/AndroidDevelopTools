@@ -36,4 +36,5 @@
     <string name="system_hosts">系统Hosts</string>
     <string name="add">添加</string>
     <string name="host_name">host方案名:</string>
+    <string name="title_information">设备信息</string>
 </resources>

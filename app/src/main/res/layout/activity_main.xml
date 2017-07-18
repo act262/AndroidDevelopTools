@@ -54,6 +54,13 @@
                 android:layout_height="wrap_content"
                 android:tag="fragment_app_kit"
                 tools:layout="@layout/fragment_app_kit" />
+
+            <fragment
+                android:name="io.micro.adt.ui.DeviceInfoFm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:tag="fragment_information"
+                tools:layout="@layout/fragment_information" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

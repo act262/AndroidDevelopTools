@@ -63,6 +63,10 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.menu_information:
+
+                break;
+
             case R.id.menu_settings:
                 DeveloperKit.openDevelopmentSettings(getApplicationContext());
                 break;
