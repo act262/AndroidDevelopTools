@@ -7,6 +7,8 @@ package io.android.shell.internal;
  */
 public class CmdExecutor extends AbstractCmdExecutor {
 
+    private final static String COMMAND_SH = "sh";
+
     @Override
     protected String execEnv() {
         return COMMAND_SH;

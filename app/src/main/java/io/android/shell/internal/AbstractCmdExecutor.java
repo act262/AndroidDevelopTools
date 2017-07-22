@@ -12,14 +12,12 @@ import io.android.shell.ICmdExecutor;
 import io.android.shell.ResultCallback;
 
 /**
- * Abstract implements
+ * Abstract implementation.
  *
  * @author act262@gmail.com
  */
 abstract class AbstractCmdExecutor implements ICmdExecutor {
 
-    final static String COMMAND_SU = "su";
-    final static String COMMAND_SH = "sh";
     private final static String COMMAND_EXIT = "exit\n";
     private final static String COMMAND_LINE_END = "\n";
 
