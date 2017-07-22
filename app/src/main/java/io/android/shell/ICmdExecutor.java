@@ -10,9 +10,18 @@ import java.io.IOException;
 public interface ICmdExecutor {
 
     /**
-     * 执行的命令行
+     * 同步执行的命令行，会阻塞当前调用线程。
      *
-     * @throws IOException
+     * @return exitValue = 0 正常执行结束
+     * @throws IOException 执行异常
      */
-    void exec(String... cmd) throws IOException;
+    CmdResult exec(String... commands) throws IOException;
+
+    /**
+     * 异步执行命令
+     *
+     * @param commands 待执行的命令
+     * @param callback 命令执行结果回调
+     */
+    void execAsync(String[] commands, ResultCallback<CmdResult> callback);
 }
