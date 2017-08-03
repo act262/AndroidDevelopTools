@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="io.micro.adt">
+
     <!-- 系统签名的app -->
     <!-- android:sharedUserId="android.uid.system" -->
 
@@ -43,6 +44,10 @@
             android:authorities="io.micro.adt"
             android:exported="false" />
 
+        <service
+            android:name=".service.TopActivityWatchService"
+            android:enabled="true"
+            android:exported="false" />
     </application>
 
 </manifest>

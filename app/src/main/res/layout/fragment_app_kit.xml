@@ -17,6 +17,13 @@
             android:text="@string/app_debug" />
     </LinearLayout>
 
+    <CheckBox
+        android:id="@+id/cb_top_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="TopActivity" />
+
     <EditText
         android:id="@+id/et_pkg"
         android:layout_width="match_parent"

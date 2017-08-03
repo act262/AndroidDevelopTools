@@ -1,5 +1,6 @@
 package io.micro.adt.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.SwitchCompat;
@@ -8,11 +9,13 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import io.micro.adt.R;
+import io.micro.adt.service.TopActivityWatchService;
 import io.micro.adt.util.AppUtil;
 import io.micro.adt.util.NetworkKit;
 import io.micro.adt.util.PackageUtil;
@@ -82,6 +85,18 @@ public class AppKitFragment extends BaseFragment {
 
         ipText = findView(R.id.tv_ip);
 
+        CheckBox topAty = findView(R.id.cb_top_activity);
+        topAty.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Intent service = new Intent(getActivity(), TopActivityWatchService.class);
+                if (isChecked) {
+                    getActivity().startService(service);
+                } else {
+                    getActivity().stopService(service);
+                }
+            }
+        });
         return mRootView;
     }
 
