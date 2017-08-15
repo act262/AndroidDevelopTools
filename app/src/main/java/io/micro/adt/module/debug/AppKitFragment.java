@@ -1,4 +1,4 @@
-package io.micro.adt.ui;
+package io.micro.adt.module.debug;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import io.micro.adt.R;
 import io.micro.adt.service.TopActivityWatchService;
+import io.micro.adt.ui.BaseFragment;
 import io.micro.adt.util.AppUtil;
 import io.micro.adt.util.NetworkKit;
 import io.micro.adt.util.PackageUtil;

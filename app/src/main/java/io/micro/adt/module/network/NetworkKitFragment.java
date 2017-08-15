@@ -1,4 +1,4 @@
-package io.micro.adt.ui;
+package io.micro.adt.module.network;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,7 +16,8 @@ import android.widget.Switch;
 import android.widget.ToggleButton;
 
 import io.micro.adt.R;
-import io.micro.adt.ui.hosts.HostsActivity;
+import io.micro.adt.module.network.hosts.HostsActivity;
+import io.micro.adt.ui.BaseFragment;
 import io.micro.adt.util.DFormatter;
 import io.micro.adt.util.NetworkKit;
 import io.micro.adt.util.text.SimpleTextWatcher;

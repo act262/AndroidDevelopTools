@@ -1,4 +1,4 @@
-package io.micro.adt.ui;
+package io.micro.adt.module.dev;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +11,7 @@ import java.util.List;
 
 import io.micro.adt.R;
 import io.micro.adt.model.DevOptFactory;
+import io.micro.adt.ui.BaseFragment;
 import io.micro.adt.util.DeveloperKit;
 import io.micro.adt.view.DevItemView;
 

@@ -6,13 +6,13 @@
     android:orientation="horizontal">
 
     <fragment
-        android:name="io.micro.adt.ui.hosts.HostsListFragment"
+        android:name="io.micro.adt.module.network.hosts.HostsListFragment"
         android:layout_width="100dp"
         android:layout_height="match_parent"
         android:tag="list"/>
 
     <fragment
-        android:name="io.micro.adt.ui.hosts.HostsContentFragment"
+        android:name="io.micro.adt.module.network.hosts.HostsContentFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:tag="content"/>

@@ -34,7 +34,7 @@
         </activity>
 
         <!-- Hosts配置管理 -->
-        <activity android:name=".ui.hosts.HostsActivity" />
+        <activity android:name=".module.network.hosts.HostsActivity" />
 
         <service android:name=".service.FloatBallService" />
 

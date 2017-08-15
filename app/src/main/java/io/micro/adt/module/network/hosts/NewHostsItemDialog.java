@@ -1,4 +1,4 @@
-package io.micro.adt.ui.hosts;
+package io.micro.adt.module.network.hosts;
 
 import android.app.DialogFragment;
 import android.content.ContentResolver;

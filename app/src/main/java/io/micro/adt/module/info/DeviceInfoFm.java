@@ -1,4 +1,4 @@
-package io.micro.adt.ui;
+package io.micro.adt.module.info;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +12,7 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 
 import io.micro.adt.R;
+import io.micro.adt.ui.BaseFragment;
 
 /**
  * Some Device information
