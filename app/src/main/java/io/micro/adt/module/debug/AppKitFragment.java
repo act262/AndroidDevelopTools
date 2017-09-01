@@ -2,6 +2,7 @@ package io.micro.adt.module.debug;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
@@ -13,7 +14,11 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import io.android.shell.CmdResult;
+import io.android.shell.ResultCallback;
+import io.android.shell.cmd.CmdSet;
 import io.micro.adt.R;
 import io.micro.adt.service.TopActivityWatchService;
 import io.micro.adt.ui.BaseFragment;
@@ -86,6 +91,17 @@ public class AppKitFragment extends BaseFragment {
 
         ipText = findView(R.id.tv_ip);
 
+        findView(R.id.btn_reset_permission).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CmdSet.execSuAsync(new String[]{"pm reset-permissions"}, new ResultCallback<CmdResult>() {
+                    @Override
+                    public void onReceiveResult(@NonNull CmdResult result) throws Exception {
+                        Toast.makeText(getActivity(), "reset permission ok", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
         CheckBox topAty = findView(R.id.cb_top_activity);
         topAty.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
