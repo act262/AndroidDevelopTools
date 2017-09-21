@@ -70,7 +70,7 @@ public class FloatBallService extends Service implements View.OnClickListener, F
         layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
         layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         layoutParams.gravity = Gravity.TOP | GravityCompat.START;
-        layoutParams.type = WindowManager.LayoutParams.TYPE_TOAST;
+        layoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
         layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                 | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
 
@@ -87,7 +87,7 @@ public class FloatBallService extends Service implements View.OnClickListener, F
     }
 
     private void hideFloatBall() {
-        if (floatBallView != null) {
+        if (floatBallView != null && floatBallView.getParent() != null) {
             applyLastPosition();
             windowManager.removeView(floatBallView);
         }

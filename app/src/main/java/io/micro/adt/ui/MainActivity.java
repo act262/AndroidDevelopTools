@@ -3,10 +3,13 @@ package io.micro.adt.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
@@ -23,6 +26,7 @@ import io.micro.adt.util.DeveloperKit;
 public class MainActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 
     private static final String EXTRA_FINISH = "EXTRA_FINISH";
+    private static final int REQUEST_CODE_OVERLAY = 100;
 
     private SharedPreferences preferences;
 
@@ -82,18 +86,39 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (REQUEST_CODE_OVERLAY == requestCode) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
+                showToast("Not allow drawOverlay");
+            }
+        }
+    }
+
+    @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         preferences.edit().putBoolean(FloatBallService.KEY_FLOAT_BALL_SWITCH, isChecked).apply();
         toggleFloatBallService(isChecked);
     }
 
     private void toggleFloatBallService(boolean checked) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
+            showToast("can not DrawOverlays");
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:" + getPackageName()));
+            startActivityForResult(intent, REQUEST_CODE_OVERLAY);
+            return;
+        }
         Intent intent = new Intent(this, FloatBallService.class);
         if (checked) {
             startService(intent);
         } else {
             stopService(intent);
         }
+    }
+
+    public void showToast(String text) {
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 
     // Root权限检查
