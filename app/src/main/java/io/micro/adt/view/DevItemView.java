@@ -2,7 +2,6 @@ package io.micro.adt.view;
 
 import android.content.Context;
 import android.graphics.ColorFilter;
-import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -25,26 +24,16 @@ public class DevItemView extends FrameLayout implements View.OnClickListener {
     private static final ColorFilter ENABLED_FILTER = ColorUtil.getEnabledFilter1();
     private static final ColorFilter DISABLED_FILTER = ColorUtil.getDisabledFilter1();
 
-    public DevItemView(Context context, AttributeSet attrs) {
-//        super(context, attrs);
-        this(context);
-    }
-
     public DevItemView(Context context) {
-        this(context, new DevItem());
-    }
-
-    public DevItemView(Context context, DevItem devItem) {
         super(context);
         View.inflate(context, R.layout.item_dev, this);
-        icon = (ImageView) findViewById(android.R.id.icon);
-        text = (TextView) findViewById(android.R.id.text1);
+        icon = findViewById(android.R.id.icon);
+        text = findViewById(android.R.id.text1);
 
         this.setOnClickListener(this);
-        set(devItem);
     }
 
-    private void set(DevItem item) {
+    public void bind(DevItem item) {
         this.item = item;
         boolean activated = item.isActivated(getContext());
         int iconRes = item.icon == 0 ? R.mipmap.ic_launcher : item.icon;

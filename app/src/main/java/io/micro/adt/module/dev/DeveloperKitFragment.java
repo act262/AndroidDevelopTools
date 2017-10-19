@@ -2,18 +2,18 @@ package io.micro.adt.module.dev;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import java.util.List;
 
 import io.micro.adt.R;
+import io.micro.adt.model.DevItem;
 import io.micro.adt.model.DevOptFactory;
 import io.micro.adt.ui.BaseFragment;
 import io.micro.adt.util.DeveloperKit;
-import io.micro.adt.view.DevItemView;
 
 /**
  * 开发者选项页面
@@ -39,28 +39,9 @@ public class DeveloperKitFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        List<DevItemView> itemViews = DevOptFactory.createAll(getActivity());
-
-        // 分为4列排布
-        final int COLUMN = 4;
-        // 可以展示的行数
-        final int ROW = (itemViews.size() - 1) / COLUMN + 1;
-
-        LinearLayout container = (LinearLayout) this.mRootView;
-
-        for (int row = 0; row < ROW; row++) {
-            LinearLayout rowLayout = new LinearLayout(getActivity());
-            rowLayout.setWeightSum(COLUMN);
-
-            for (int column = 0; column < COLUMN; column++) {
-                int index = COLUMN * row + column;
-                if (index >= itemViews.size()) {
-                    break;
-                }
-                rowLayout.addView(itemViews.get(index), new LinearLayout.LayoutParams(0, -1, 1));
-            }
-
-            container.addView(rowLayout);
-        }
+        RecyclerView recyclerView = findView(R.id.rv_developer_kit);
+        List<DevItem> devItems = DevOptFactory.createAll();
+        DevKitAdapter adapter = new DevKitAdapter(devItems);
+        recyclerView.setAdapter(adapter);
     }
 }

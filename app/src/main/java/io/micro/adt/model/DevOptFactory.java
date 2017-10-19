@@ -9,7 +9,6 @@ import java.util.List;
 
 import io.micro.adt.R;
 import io.micro.adt.util.DeveloperKit;
-import io.micro.adt.view.DevItemView;
 
 /**
  * Developer Factory
@@ -18,20 +17,19 @@ import io.micro.adt.view.DevItemView;
  */
 public class DevOptFactory {
 
-    public static List<DevItemView> createAll(Context context) {
-        ArrayList<DevItemView> list = new ArrayList<>();
-        list.add(new DevItemView(context, new DebugUsb()));
-        list.add(new DevItemView(context, new DebugKeepScreen()));
-        list.add(new DevItemView(context, new DebugLayout()));
-        list.add(new DevItemView(context, new DebugOverdraw()));
-        list.add(new DevItemView(context, new DebugGPUProfile()));
-        list.add(new DevItemView(context, new DebugStrict()));
-        // target api >= 21
+    public static List<DevItem> createAll() {
+        ArrayList<DevItem> list = new ArrayList<>();
+        list.add(new DebugUsb());
+        list.add(new DebugKeepScreen());
+        list.add(new DebugLayout());
+        list.add(new DebugOverdraw());
+        list.add(new DebugGPUProfile());
+        list.add(new DebugStrict());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            list.add(new DevItemView(context, new DebugDestroyActivity()));
+            list.add(new DebugDestroyActivity());
         }
-        list.add(new DevItemView(context, new DebugPointerLocation()));
-        list.add(new DevItemView(context, new DebugShowTouches()));
+        list.add(new DebugPointerLocation());
+        list.add(new DebugShowTouches());
         return list;
     }
 
