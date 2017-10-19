@@ -3,14 +3,15 @@ apply plugin: 'com.antfortune.freeline'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "26.0.1"
+    compileSdkVersion rootProject.android.compileSdkVersion
+    buildToolsVersion rootProject.android.buildToolsVersion
+
     defaultConfig {
         applicationId "io.micro.adt"
-        minSdkVersion 15
-        targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion rootProject.android.minSdkVersion
+        targetSdkVersion rootProject.android.targetSdkVersion
+        versionCode rootProject.android.versionCode
+        versionName rootProject.android.versionName
     }
     buildTypes {
         release {
@@ -23,10 +24,12 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    compile 'com.android.support:appcompat-v7:25.3.0'
-    compile 'com.android.support:recyclerview-v7:25.3.0'
+    compile rootProject.supportLib['appcompat-v7']
+    compile rootProject.supportLib['recyclerview-v7']
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+
     compile project(':devsdk')
+    compile project(':framework')
 }
 repositories {
     mavenCentral()
