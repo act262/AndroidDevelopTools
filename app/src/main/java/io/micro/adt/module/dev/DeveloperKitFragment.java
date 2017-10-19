@@ -3,9 +3,7 @@ package io.micro.adt.module.dev;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import java.util.List;
 
@@ -22,24 +20,21 @@ import io.micro.adt.util.DeveloperKit;
  */
 public class DeveloperKitFragment extends BaseFragment {
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        mRootView = inflater.inflate(R.layout.fragment_developer_kit, container, false);
-        View more = findView(R.id.btn_more);
-
-        more.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DeveloperKit.openDevelopmentSettings(getActivity());
-            }
-        });
-        return mRootView;
+    protected int layoutResId() {
+        return R.layout.fragment_developer_kit;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        findView(R.id.btn_more).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DeveloperKit.openDevelopmentSettings(getActivity());
+            }
+        });
 
         RecyclerView recyclerView = findView(R.id.rv_developer_kit);
         List<DevItem> devItems = DevOptFactory.createAll();

@@ -6,9 +6,7 @@ import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.util.Patterns;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -34,10 +32,14 @@ public class NetworkKitFragment extends BaseFragment implements CompoundButton.O
     private EditText hostText;
     private EditText portText;
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mRootView = inflater.inflate(R.layout.fragment_network_kit, container, false);
+    protected int layoutResId() {
+        return R.layout.fragment_network_kit;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         proxyButton = findView(R.id.proxySwitch);
         hostText = findView(R.id.et_host);
         portText = findView(R.id.et_port);
@@ -112,7 +114,6 @@ public class NetworkKitFragment extends BaseFragment implements CompoundButton.O
                 startActivity(new Intent(getActivity(), HostsActivity.class));
             }
         });
-        return mRootView;
     }
 
     @Override

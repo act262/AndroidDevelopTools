@@ -7,9 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -39,11 +37,14 @@ public class AppKitFragment extends BaseFragment {
     private EditText pkgEditText;
     private TextView ipText;
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mRootView = inflater.inflate(R.layout.fragment_app_kit, null);
+    protected int layoutResId() {
+        return R.layout.fragment_app_kit;
+    }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         pkgEditText = findView(R.id.et_pkg);
         pkgEditText.addTextChangedListener(new SimpleTextWatcher() {
             @Override
@@ -114,7 +115,6 @@ public class AppKitFragment extends BaseFragment {
                 }
             }
         });
-        return mRootView;
     }
 
     @Override
