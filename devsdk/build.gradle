@@ -20,6 +20,6 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-
     provided project(':framework')
+    compile rootProject.supportLib['appcompat-v7']
 }
