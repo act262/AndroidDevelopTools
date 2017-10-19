@@ -1,8 +1,10 @@
-package io.micro.adt.model;
+package io.micro.adt.module.dev.model;
 
 import android.content.Context;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
+
+import io.micro.adt.R;
 
 /**
  * DevItem Model
@@ -17,10 +19,10 @@ public class DevItem {
     public int id;
 
     @StringRes
-    public int desc;
+    public int desc = R.string.app_name;
 
     @DrawableRes
-    public int icon;
+    public int icon = R.mipmap.ic_launcher;
 
     /**
      * 激活状态

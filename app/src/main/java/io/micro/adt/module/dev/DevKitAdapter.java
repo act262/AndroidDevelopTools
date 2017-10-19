@@ -6,11 +6,13 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import io.micro.adt.model.DevItem;
+import io.micro.adt.module.dev.model.DevItem;
 import io.micro.adt.view.DevItemView;
 
 /**
  * Adapter
+ *
+ * @author act262@gmail.com
  */
 class DevKitAdapter extends RecyclerView.Adapter<DevKitAdapter.ItemViewHolder> {
 

@@ -10,13 +10,15 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import io.micro.adt.R;
-import io.micro.adt.model.DevItem;
-import io.micro.adt.model.DevOptFactory;
+import io.micro.adt.module.dev.model.DevItem;
+import io.micro.adt.module.dev.model.DevOptFactory;
 import io.micro.adt.ui.BaseFragment;
 import io.micro.adt.util.DeveloperKit;
 
 /**
  * 开发者选项页面
+ *
+ * @author act262@gmail.com
  */
 public class DeveloperKitFragment extends BaseFragment {
 

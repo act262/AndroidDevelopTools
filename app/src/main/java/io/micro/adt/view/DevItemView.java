@@ -8,11 +8,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import io.micro.adt.R;
-import io.micro.adt.model.DevItem;
+import io.micro.adt.module.dev.model.DevItem;
 import io.micro.adt.util.ColorUtil;
 
 /**
  * Developer Options Item Layout
+ *
+ * @author act262@gmail.com
  */
 public class DevItemView extends FrameLayout implements View.OnClickListener {
 
@@ -36,10 +38,8 @@ public class DevItemView extends FrameLayout implements View.OnClickListener {
     public void bind(DevItem item) {
         this.item = item;
         boolean activated = item.isActivated(getContext());
-        int iconRes = item.icon == 0 ? R.mipmap.ic_launcher : item.icon;
-        icon.setImageResource(iconRes);
-        int descRes = item.desc == 0 ? R.string.app_name : item.desc;
-        text.setText(descRes);
+        icon.setImageResource(item.icon);
+        text.setText(item.desc);
         this.setActivated(activated);
 
         // 这里控制不同状态下的图标颜色变化

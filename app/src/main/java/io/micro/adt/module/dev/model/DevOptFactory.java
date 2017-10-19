@@ -1,4 +1,4 @@
-package io.micro.adt.model;
+package io.micro.adt.module.dev.model;
 
 import android.content.Context;
 import android.os.Build;
