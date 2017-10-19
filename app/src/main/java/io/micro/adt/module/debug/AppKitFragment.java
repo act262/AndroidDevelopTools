@@ -96,7 +96,7 @@ public class AppKitFragment extends BaseFragment {
             public void onClick(View v) {
                 CmdSet.execSuAsync(new String[]{"pm reset-permissions"}, new ResultCallback<CmdResult>() {
                     @Override
-                    public void onReceiveResult(@NonNull CmdResult result) throws Exception {
+                    public void onReceiveResult(@NonNull CmdResult result) {
                         Toast.makeText(getActivity(), "reset permission ok", Toast.LENGTH_SHORT).show();
                     }
                 });

@@ -31,7 +31,7 @@ public class TopActivityWatchService extends Service {
         String[] cmds = {"dumpsys activity | grep mFocusedActivity"};
         CmdSet.execSuAsync(cmds, new ResultCallback<CmdResult>() {
             @Override
-            public void onReceiveResult(@NonNull CmdResult result) throws Exception {
+            public void onReceiveResult(@NonNull CmdResult result) {
                 String successResult = result.successResult;
                 if (!TextUtils.isEmpty(successResult)) {
                     //  mFocusedActivity: ActivityRecord{426c48d0 u0 io.micro.adt/.ui.MainActivity t29}

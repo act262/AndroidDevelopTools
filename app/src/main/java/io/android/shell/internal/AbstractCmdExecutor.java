@@ -1,5 +1,8 @@
 package io.android.shell.internal;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -22,6 +25,7 @@ abstract class AbstractCmdExecutor implements ICmdExecutor {
     private final static String COMMAND_LINE_END = "\n";
 
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
     public CmdResult exec(String... commands) throws IOException {
@@ -33,12 +37,18 @@ abstract class AbstractCmdExecutor implements ICmdExecutor {
         executorService.execute(new Runnable() {
             @Override
             public void run() {
-                if (callback != null) {
-                    try {
-                        callback.onReceiveResult(execInternal(commands));
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                try {
+                    final CmdResult result = execInternal(commands);
+                    if (callback != null) {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                callback.onReceiveResult(result);
+                            }
+                        });
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });

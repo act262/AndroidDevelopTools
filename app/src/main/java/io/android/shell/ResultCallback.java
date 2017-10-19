@@ -13,5 +13,5 @@ public interface ResultCallback<T> {
      *
      * @param result the exitValue
      */
-    void onReceiveResult(@NonNull T result) throws Exception;
+    void onReceiveResult(@NonNull T result);
 }
