@@ -3,8 +3,10 @@ package io.micro.adt.module.dev;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
+import java.util.Collections;
 import java.util.List;
 
 import io.micro.adt.R;
@@ -37,8 +39,27 @@ public class DeveloperKitFragment extends BaseFragment {
         });
 
         RecyclerView recyclerView = findView(R.id.rv_developer_kit);
-        List<DevItem> devItems = DevOptFactory.createAll();
+        final List<DevItem> devItems = DevOptFactory.createAll();
         DevKitAdapter adapter = new DevKitAdapter(devItems);
         recyclerView.setAdapter(adapter);
+
+        // 实现拖动排序效果
+        int dragDirs = ItemTouchHelper.LEFT | ItemTouchHelper.UP | ItemTouchHelper.RIGHT | ItemTouchHelper.DOWN;
+        int swipeDirs = 0;
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(dragDirs, swipeDirs) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                int fromPosition = viewHolder.getAdapterPosition();
+                int targetPosition = target.getAdapterPosition();
+                Collections.swap(devItems, fromPosition, targetPosition);
+                recyclerView.getAdapter().notifyItemMoved(fromPosition, targetPosition);
+                return true;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                // no-op
+            }
+        }).attachToRecyclerView(recyclerView);
     }
 }
