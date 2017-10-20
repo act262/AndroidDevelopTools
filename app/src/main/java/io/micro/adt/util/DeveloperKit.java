@@ -113,11 +113,16 @@ public class DeveloperKit {
     public static void setDebugLayout(boolean enabled) {
         try {
             String state = Boolean.toString(enabled);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            try {
                 SystemProperties.set(DEBUG_LAYOUT_PROPERTY, state);
-            } else {
+            } catch (Exception e) {
+                e.printStackTrace();
                 SystemPropertiesCmds.set(DEBUG_LAYOUT_PROPERTY, state);
             }
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            } else {
+//                SystemPropertiesCmds.set(DEBUG_LAYOUT_PROPERTY, state);
+//            }
             refresh();
         } catch (IOException e) {
             e.printStackTrace();
@@ -138,7 +143,12 @@ public class DeveloperKit {
         try {
             String state = enabled ? OVERDRAW_PROPERTY_SHOW : FALSE;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                SystemProperties.set(DEBUG_OVERDRAW_PROPERTY, state);
+                try {
+                    SystemProperties.set(DEBUG_OVERDRAW_PROPERTY, state);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    SystemPropertiesCmds.set(DEBUG_OVERDRAW_PROPERTY, state);
+                }
             } else {
                 SystemPropertiesCmds.set(DEBUG_OVERDRAW_PROPERTY, state);
             }
