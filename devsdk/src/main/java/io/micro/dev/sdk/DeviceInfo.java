@@ -1,4 +1,4 @@
-package com.micro.dev.sdk;
+package io.micro.dev.sdk;
 
 import android.os.Build;
 

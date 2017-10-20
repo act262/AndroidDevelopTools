@@ -21,7 +21,7 @@ import android.widget.Toast;
 import io.android.shell.RootHelper;
 import io.micro.adt.R;
 import io.micro.adt.service.FloatBallService;
-import io.micro.adt.util.DeveloperKit;
+import io.micro.dev.sdk.DeveloperKit;
 
 public class MainActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 

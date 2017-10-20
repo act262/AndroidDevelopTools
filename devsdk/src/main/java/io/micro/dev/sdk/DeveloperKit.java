@@ -1,4 +1,4 @@
-package io.micro.adt.util;
+package io.micro.dev.sdk;
 
 import android.content.Context;
 import android.content.Intent;

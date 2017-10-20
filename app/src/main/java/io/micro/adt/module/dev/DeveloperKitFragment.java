@@ -11,7 +11,7 @@ import io.micro.adt.R;
 import io.micro.adt.module.dev.model.DevItem;
 import io.micro.adt.module.dev.model.DevOptFactory;
 import io.micro.adt.ui.BaseFragment;
-import io.micro.adt.util.DeveloperKit;
+import io.micro.dev.sdk.DeveloperKit;
 
 /**
  * 开发者选项页面
