@@ -27,8 +27,9 @@
         android:id="@+id/cb_top_activity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:checked="true"
-        android:text="TopActivity" />
+        android:checked="false"
+        android:text="TopActivity"
+        tools:checked="true" />
 
     <EditText
         android:id="@+id/et_pkg"
