@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.v4.view.GravityCompat;
@@ -26,8 +27,12 @@ import io.android.shell.cmd.CmdSet;
  */
 public class TopActivityWatchService extends Service {
 
-    private TextView textView;
-    private WindowManager windowManager;
+    private TextView mTextView;
+    private WindowManager mWindowManager;
+
+    private Handler mHandler = new Handler();
+
+    private static final String[] CMDS = {"dumpsys activity | grep mFocusedActivity"};
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -40,16 +45,16 @@ public class TopActivityWatchService extends Service {
         super.onCreate();
 
         initView();
-        trackTopActivity();
+        startTracking();
     }
 
     private void initView() {
-        windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+        mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
 
-        textView = new TextView(this);
-        textView.setPadding(10, 10, 10, 10);
-        textView.setTextColor(Color.WHITE);
-        textView.setBackgroundColor(Color.GRAY);
+        mTextView = new TextView(this);
+        mTextView.setPadding(10, 10, 10, 10);
+        mTextView.setTextColor(Color.WHITE);
+        mTextView.setBackgroundColor(Color.GRAY);
 
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
         layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -61,29 +66,45 @@ public class TopActivityWatchService extends Service {
         layoutParams.alpha = 0.8f;
         layoutParams.format = PixelFormat.TRANSPARENT;
 
-        windowManager.addView(textView, layoutParams);
+        mWindowManager.addView(mTextView, layoutParams);
+    }
+
+    private void startTracking() {
+        mHandler.postAtTime(new Runnable() {
+            @Override
+            public void run() {
+                trackTopActivity();
+
+                mHandler.postDelayed(this, 1000L);
+            }
+        }, 1000L);
     }
 
     private void trackTopActivity() {
-        String[] cmds = {"dumpsys activity | grep mFocusedActivity"};
-        CmdSet.execSuAsync(cmds, new ResultCallback<CmdResult>() {
+        CmdSet.execSuAsync(CMDS, new ResultCallback<CmdResult>() {
             @Override
             public void onReceiveResult(@NonNull CmdResult result) {
                 String successResult = result.successResult;
                 if (!TextUtils.isEmpty(successResult)) {
-                    //  mFocusedActivity: ActivityRecord{426c48d0 u0 io.micro.adt/.ui.MainActivity t29}
-                    String[] split = successResult.trim().split(" ");
-                    String pkg = split[3];
-                    ComponentName componentName = ComponentName.unflattenFromString(pkg);
-                    textView.setText(componentName.flattenToString());
+                    processResult(successResult);
                 }
             }
         });
     }
 
+    private void processResult(String result) {
+        //  mFocusedActivity: ActivityRecord{426c48d0 u0 io.micro.adt/.ui.MainActivity t29}
+        String[] split = result.trim().split(" ");
+        String pkg = split[3];
+        ComponentName componentName = ComponentName.unflattenFromString(pkg);
+        mTextView.setText(componentName.flattenToString());
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
-        windowManager.removeViewImmediate(textView);
+        mHandler.removeCallbacksAndMessages(null);
+        mWindowManager.removeViewImmediate(mTextView);
     }
+
 }
