@@ -113,16 +113,16 @@ public class DeveloperKit {
     public static void setDebugLayout(boolean enabled) {
         try {
             String state = Boolean.toString(enabled);
-            try {
-                SystemProperties.set(DEBUG_LAYOUT_PROPERTY, state);
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                try {
+                    SystemProperties.set(DEBUG_LAYOUT_PROPERTY, state);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    SystemPropertiesCmds.set(DEBUG_LAYOUT_PROPERTY, state);
+                }
+            } else {
                 SystemPropertiesCmds.set(DEBUG_LAYOUT_PROPERTY, state);
             }
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            } else {
-//                SystemPropertiesCmds.set(DEBUG_LAYOUT_PROPERTY, state);
-//            }
             refresh();
         } catch (IOException e) {
             e.printStackTrace();
@@ -172,7 +172,12 @@ public class DeveloperKit {
         try {
             String state = enabled ? PROFILE_PROPERTY_VISUALIZE_BARS : FALSE;
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
-                SystemProperties.set(PROFILE_PROPERTY, state);
+                try {
+                    SystemProperties.set(PROFILE_PROPERTY, state);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    SystemPropertiesCmds.set(PROFILE_PROPERTY, state);
+                }
             } else {
                 SystemPropertiesCmds.set(PROFILE_PROPERTY, state);
             }
