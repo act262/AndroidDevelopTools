@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,14 +14,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/setting_network"/>
+            android:text="@string/setting_network" />
 
         <TextView
             android:id="@+id/btn_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="@string/more"/>
+            android:text="@string/more" />
     </RelativeLayout>
 
     <ToggleButton
@@ -30,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textOff="@string/open_wifi"
-        android:textOn="@string/close_wifi"/>
+        android:textOn="@string/close_wifi" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -43,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textOff="@string/turn_off_proxy"
-            android:textOn="@string/turn_on_proxy"/>
+            android:textOn="@string/turn_on_proxy" />
 
         <EditText
             android:id="@+id/et_host"
@@ -54,7 +53,7 @@
             android:gravity="right"
             android:hint="@string/hint_proxy_host"
             android:inputType="text"
-            tools:ignore="RtlHardcoded"/>
+            tools:ignore="RtlHardcoded" />
 
         <EditText
             android:id="@+id/et_port"
@@ -64,18 +63,20 @@
             android:gravity="right"
             android:hint="@string/hint_proxy_port"
             android:inputType="number"
-            android:text="@string/default_proxy_port"/>
+            android:text="@string/default_proxy_port" />
     </LinearLayout>
 
+    <!-- TODO:hosts配置？ -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:visibility="gone">
 
         <Button
             android:id="@+id/btn_hosts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="hosts"/>
+            android:text="hosts" />
     </LinearLayout>
 
 </LinearLayout>
