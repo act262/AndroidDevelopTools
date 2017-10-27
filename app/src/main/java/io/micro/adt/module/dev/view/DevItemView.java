@@ -1,4 +1,4 @@
-package io.micro.adt.view;
+package io.micro.adt.module.dev.view;
 
 import android.content.Context;
 import android.graphics.ColorFilter;

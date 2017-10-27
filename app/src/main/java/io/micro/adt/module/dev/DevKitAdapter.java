@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import io.micro.adt.module.dev.model.DevItem;
-import io.micro.adt.view.DevItemView;
+import io.micro.adt.module.dev.view.DevItemView;
 
 /**
  * Adapter
